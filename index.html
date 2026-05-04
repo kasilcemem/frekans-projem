@@ -3,107 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kaş AI & Dünya Radyosu</title>
+    <title>Kaş AI Kontrol Merkezi</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        :root { --bg: #0d0d0d; --gold: #d4af37; --panel: #1a1a1a; --text: #f0f0f0; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; }
-        .container { max-width: 1000px; margin: auto; }
+        :root { --bg: #0a0a0a; --gold: #d4af37; --panel: #161616; --text: #f0f0f0; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; overflow-x: hidden; }
+        .container { max-width: 1000px; margin: auto; padding-bottom: 100px; }
 
-        /* RADYO: EN ÜSTTE VE GÖZE ÇARPAN */
+        /* RADYO PANELİ */
         .radio-master {
-            background: linear-gradient(145deg, #1a1a1a, #252525);
-            border: 2px solid var(--gold);
-            border-radius: 25px;
-            padding: 40px;
-            text-align: center;
-            margin-bottom: 30px;
-            box-shadow: 0 15px 45px rgba(0,0,0,0.6);
+            background: linear-gradient(145deg, #1a1a1a, #222);
+            border: 1px solid var(--gold); border-radius: 20px;
+            padding: 30px; text-align: center; margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .live-tag { color: #e74c3c; font-weight: bold; letter-spacing: 3px; animation: blink 1.5s infinite; }
-        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
-        audio { width: 100%; margin-top: 25px; filter: invert(1) hue-rotate(180deg) brightness(1.5); }
+        audio { width: 100%; margin-top: 20px; filter: invert(1) brightness(1.2); }
 
-        /* AKILLI SİNEMA TARAYICI */
+        /* SİNEMA TARAYICI */
         .ai-hub {
-            background: var(--panel);
-            border-radius: 20px;
-            padding: 25px;
-            text-align: center;
-            margin-bottom: 30px;
-            border: 1px solid #333;
+            background: var(--panel); border-radius: 20px; padding: 20px;
+            text-align: center; margin-bottom: 30px; border: 1px solid #333;
         }
         .search-bar {
-            width: 80%; padding: 15px; border-radius: 30px; border: 1px solid #444;
-            background: #000; color: var(--gold); margin-bottom: 15px; outline: none;
+            width: 70%; padding: 12px; border-radius: 20px; border: 1px solid #444;
+            background: #000; color: var(--gold); outline: none;
         }
         .hub-btn {
-            background: var(--gold); color: #000; border: none; padding: 10px 20px;
-            border-radius: 20px; cursor: pointer; font-weight: bold; margin: 5px; transition: 0.3s;
+            background: var(--gold); color: #000; border: none; padding: 10px 18px;
+            border-radius: 20px; cursor: pointer; font-weight: bold; margin: 5px;
         }
-        .hub-btn:hover { background: #fff; transform: scale(1.05); }
 
-        /* ALT PANEL: GRAFİK VE KÜTÜPHANE */
+        /* AI SOHBET KUTUSU (YENİ) */
+        #ai-chat-wrapper {
+            position: fixed; bottom: 20px; right: 20px; width: 300px;
+            background: var(--panel); border: 1px solid var(--gold);
+            border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            display: flex; flex-direction: column; overflow: hidden;
+        }
+        #chat-header { background: var(--gold); color: #000; padding: 10px; font-weight: bold; font-size: 14px; }
+        #chat-content { height: 200px; padding: 10px; overflow-y: auto; font-size: 13px; color: #ccc; }
+        .ai-input-area { display: flex; border-top: 1px solid #333; }
+        #ai-input { background: #000; border: none; color: #fff; padding: 10px; flex: 1; outline: none; }
+        #ai-send { background: #333; color: var(--gold); border: none; padding: 10px; cursor: pointer; }
+
+        /* ALT PANEL */
         .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; }
         .card { background: var(--panel); border-radius: 20px; padding: 20px; border: 1px solid #222; }
-        .lib-link {
-            display: block; color: #888; text-decoration: none; padding: 10px 0;
-            border-bottom: 1px solid #333; font-size: 14px;
-        }
+        .lib-link { display: block; color: #888; text-decoration: none; padding: 8px 0; border-bottom: 1px solid #333; font-size: 14px; }
         .lib-link:hover { color: var(--gold); }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- RADYO: BURADA VE GÖRÜNÜR! -->
+    <!-- RADYO -->
     <div class="radio-master">
-        <span class="live-tag">● CANLI YAYIN AKTİF</span>
-        <h1 style="margin: 10px 0; color: var(--gold);">Dünya Müziği Radyosu</h1>
-        <p style="color: #666; font-size: 14px;">Kaş'taki çalışmalarına global tınılar eşlik etsin.</p>
-        <audio controls autoplay>
-            <source src="https://icecast.radiofrance.fr/fip-midfi.mp3" type="audio/mpeg">
-        </audio>
+        <h2 style="margin: 0; color: var(--gold); letter-spacing: 2px;">DÜNYA MÜZİĞİ RADYOSU</h2>
+        <audio controls autoplay><source src="https://icecast.radiofrance.fr/fip-midfi.mp3" type="audio/mpeg"></audio>
     </div>
 
     <!-- SİNEMA TARAYICI -->
     <div class="ai-hub">
-        <h3 style="margin-top:0; font-weight: 300; letter-spacing: 2px;">AKILLI FİLM TARAYICI</h3>
-        <input type="text" id="movieInp" class="search-bar" placeholder="Aratmak istediğin entellektüel filmi yaz...">
-        <div>
-            <button class="hub-btn" onclick="go('mubi')">MUBI</button>
-            <button class="hub-btn" onclick="go('criterion')">Criterion</button>
-            <button class="hub-btn" onclick="go('imdb')">IMDb</button>
-        </div>
+        <input type="text" id="movieInp" class="search-bar" placeholder="Film veya yönetmen...">
+        <button class="hub-btn" onclick="go('mubi')">MUBI</button>
+        <button class="hub-btn" onclick="go('criterion')">Criterion</button>
     </div>
 
     <div class="footer-grid">
-        <!-- ISIL ANALİZ -->
-        <div class="card" style="height: 180px;">
-            <canvas id="weatherChart"></canvas>
-        </div>
-        <!-- TEKNİK KÜTÜPHANE -->
+        <div class="card" style="height: 150px;"><canvas id="weatherChart"></canvas></div>
         <div class="card">
-            <h4 style="margin:0 0 10px 0; color: var(--gold);">BİLGİ ÜSSÜ</h4>
-            <a href="frekanslar.pdf" class="lib-link">📡 Frekans Analizi</a>
-            <a href="bonsai_teknikleri.pdf" class="lib-link">🌳 Bonsai Sanatı</a>
-            <a href="mimari_cizim.pdf" class="lib-link">📐 Mimari Eskizler</a>
+            <h4 style="margin:0 0 10px 0; color: var(--gold);">KÜTÜPHANE</h4>
+            <a href="frekanslar.pdf" class="lib-link">📡 Frekans Verileri</a>
+            <a href="bonsai_teknikleri.pdf" class="lib-link">🌳 Bonsai Teknikleri</a>
+            <a href="mimari_cizim.pdf" class="lib-link">📐 Mimari Projeler</a>
         </div>
     </div>
 </div>
 
+<!-- AI ASİSTAN KUTUSU -->
+<div id="ai-chat-wrapper">
+    <div id="chat-header">✨ Kaş AI Asistan</div>
+    <div id="chat-content">Merhaba! Bonsai bakımı, mimari çizimler veya film önerileri hakkında ne sormak istersin?</div>
+    <div class="ai-input-area">
+        <input type="text" id="ai-input" placeholder="Bir şey sor...">
+        <button id="ai-send" onclick="askAI()">👉</button>
+    </div>
+</div>
+
 <script>
+    // Sinema Arama
     function go(p) {
         const q = document.getElementById('movieInp').value;
         if(!q) return alert('Film adı giriniz.');
-        const urls = {
-            mubi: `https://mubi.com/tr/search/films?query=${q}`,
-            criterion: `https://www.criterion.com/search#stq=${q}`,
-            imdb: `https://www.imdb.com/find?q=${q}&s=tt&ttype=ft`
-        };
+        const urls = { mubi: `https://mubi.com/tr/search/films?query=${q}`, criterion: `https://www.criterion.com/search#stq=${q}` };
         window.open(urls[p], '_blank');
     }
 
+    // Basit AI Simülasyonu
+    function askAI() {
+        const input = document.getElementById('ai-input');
+        const content = document.getElementById('chat-content');
+        if(!input.value) return;
+
+        content.innerHTML += `<div style="color:var(--gold); margin-top:10px;"><b>Sen:</b> ${input.value}</div>`;
+        
+        // Buraya gerçek bir API bağlayabilirsin, şimdilik akıllı cevaplar simüle ediyoruz:
+        setTimeout(() => {
+            let response = "Bunu araştırıyorum... Mimari ve teknik detaylar için PDF kütüphanene bakmamı ister misin?";
+            if(input.value.toLowerCase().includes("bonsai")) response = "Bonsai için bugün Kaş havası ideal, nem oranına dikkat et.";
+            content.innerHTML += `<div style="margin-top:5px;"><b>AI:</b> ${response}</div>`;
+            content.scrollTop = content.scrollHeight;
+        }, 1000);
+        
+        input.value = "";
+    }
+
+    // Grafik
     fetch('results.json').then(r => r.json()).then(d => {
         const ctx = document.getElementById('weatherChart').getContext('2d');
         new Chart(ctx, {
