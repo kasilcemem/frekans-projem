@@ -1,17 +1,43 @@
 <!DOCTYPE html>
-<html>
-<body style="font-family: sans-serif; text-align: center;">
-    <h1>Frekans Analiz Paneli</h1>
-    <div id="sonuc">Veriler yükleniyor...</div>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Akıllı Takip Paneli</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; display: flex; flex-direction: column; align-items: center; }
+        .container { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin-top: 50px; width: 80%; max-width: 600px; }
+        h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: center; border-bottom: 1px solid #ddd; }
+        th { background: #3498db; color: white; }
+        .yukselis { color: #27ae60; font-weight: bold; }
+        .dusus { color: #e74c3c; font-weight: bold; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.8em; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Veri Analiz Paneli</h1>
+        <div id="icerik">Veriler işleniyor...</div>
+    </div>
+
     <script>
         fetch('results.json')
             .then(res => res.json())
             .then(data => {
-                let tablo = '<table border="1" style="margin:auto"><tr><th>Nokta</th><th>Değer</th><th>Değişim</th></tr>';
+                let html = '<table><tr><th>Sıra</th><th>Değer</th><th>Değişim</th><th>Durum</th></tr>';
                 data.forEach(d => {
-                    tablo += `<tr><td>${d.nokta}</td><td>${d.deger}</td><td>${d.fark}</td></tr>`;
+                    const renkSinifi = d.degisim >= 0 ? 'yukselis' : 'dusus';
+                    const durumRozeti = d.degisim >= 0 ? '#27ae60' : '#e74c3c';
+                    
+                    html += `<tr>
+                        <td>${d.nokta}</td>
+                        <td>${d.deger}</td>
+                        <td class="${renkSinifi}">${d.degisim > 0 ? '+' : ''}${d.degisim}</td>
+                        <td><span class="badge" style="background:${durumRozeti}">${d.durum}</span></td>
+                    </tr>`;
                 });
-                document.getElementById('sonuc').innerHTML = tablo + '</table>';
+                document.getElementById('icerik').innerHTML = html + '</table>';
             });
     </script>
 </body>
