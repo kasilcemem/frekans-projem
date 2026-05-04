@@ -13,33 +13,69 @@
         .chart-container { height: 350px; margin-bottom: 50px; }
         
         /* Kütüphane Tasarımı */
-        .library-section { border-top: 3px solid #3498db; pt: 30px; margin-top: 50px; }
-        .shelf { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px; padding: 20px; }
-        .book { 
-            background: #34495e; color: white; padding: 20px; border-radius: 5px 15px 15px 5px; 
-            text-decoration: none; text-align: center; min-height: 120px; display: flex; 
-            align-items: center; justify-content: center; font-weight: bold;
-            box-shadow: 5px 5px 10px rgba(0,0,0,0.2); transition: transform 0.3s;
-            border-left: 10px solid #2c3e50;
+        .library-section { border-top: 3px solid #3498db; padding-top: 30px; margin-top: 50px; }
+        .shelf { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
+            gap: 25px; 
+            padding: 20px; 
         }
-        .book:hover { transform: translateY(-10px) rotate(-20deg); background: #2980b9; }
-        .book-title { font-size: 14px; }
+        .book { 
+            background: #34495e; 
+            color: white; 
+            padding: 20px; 
+            border-radius: 5px 15px 15px 5px; 
+            text-decoration: none; 
+            text-align: center; 
+            min-height: 150px; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center; 
+            font-weight: bold;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.3); 
+            transition: all 0.3s ease;
+            border-left: 12px solid #2c3e50;
+        }
+        .book:hover { 
+            transform: translateY(-15px) rotate(-5deg); 
+            background: #2980b9; 
+            box-shadow: 10px 15px 25px rgba(0,0,0,0.4);
+        }
+        .book-icon { font-size: 30px; margin-bottom: 10px; }
+        .book-title { font-size: 14px; line-height: 1.4; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📍 Bölgesel Analiz: Kaş ve Çevresi</h1>
+        <h1>📍 Kaş ve Çevre İlçeler Analizi</h1>
         <div class="chart-container"><canvas id="weatherChart"></canvas></div>
 
         <!-- KİTAPLIK BÖLÜMÜ -->
         <div class="library-section">
-            <h2>📚 Dijital Kitaplık</h2>
+            <h2>📚 Kitaplık</h2>
             <div class="shelf">
-                <!-- Buradaki '#' yerlerine kendi PDF linklerini koyabilirsin -->
-                <a href="#" class="book"><div class="book-title">Frekanslar ve Dalga Boyu.pdf</div></a>
-                <a href="#" class="book" style="border-left-color: #27ae60;"><div class="book-title">Bonsai Teknikleri.pdf</div></a>
-                <a href="#" class="book" style="border-left-color: #e67e22;"><div class="book-title">Mimari Çizim Rehberi.pdf</div></a>
-                <a href="#" class="book" style="border-left-color: #8e44ad;"><div class="book-title">Python Notlarım.pdf</div></a>
+                <!-- PDF Linklerini aşağıya ekledim. Dosya isimlerini GitHub'a yüklediğinle aynı yaparsan tıklandığında açılır. -->
+                
+                <a href="frekanslar.pdf" class="book">
+                    <div class="book-icon">📡</div>
+                    <div class="book-title">Frekanslar ve Dalga Boyu</div>
+                </a>
+
+                <a href="bonsai_teknikleri.pdf" class="book" style="border-left-color: #27ae60;">
+                    <div class="book-icon">🌳</div>
+                    <div class="book-title">Bonsai Teknikleri Rehberi</div>
+                </a>
+
+                <a href="mimari_cizim.pdf" class="book" style="border-left-color: #e67e22;">
+                    <div class="book-icon">📐</div>
+                    <div class="book-title">Mimari Çizim Prensipleri</div>
+                </a>
+
+                <a href="python_notlar.pdf" class="book" style="border-left-color: #8e44ad;">
+                    <div class="book-icon">🐍</div>
+                    <div class="book-title">Python Programlama Notları</div>
+                </a>
             </div>
         </div>
     </div>
@@ -60,7 +96,11 @@
                             borderRadius: 8
                         }]
                     },
-                    options: { responsive: true, maintainAspectRatio: false }
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false,
+                        scales: { y: { beginAtZero: false } }
+                    }
                 });
             });
     </script>
