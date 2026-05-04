@@ -3,115 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kaş Sanat & Sinema Arşivi</title>
+    <title>Kaş Bağımsız Sinema Odası</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --bg-deep: #050505;
-            --panel-bg: #121212;
-            --gold: #d4af37;
-            --text-dim: #888;
+            --bg: #000;
+            --gold: #c5a059;
+            --panel: #111;
         }
-        body { font-family: 'Georgia', serif; background: var(--bg-deep); color: #e0e0e0; margin: 0; padding: 0; scroll-behavior: smooth; }
+        body { font-family: 'Times New Roman', serif; background: var(--bg); color: #fff; margin: 0; overflow-x: hidden; }
         
-        /* HEADER */
-        header { padding: 60px 20px; text-align: center; border-bottom: 1px solid #222; }
-        .main-title { font-size: 2.5rem; letter-spacing: 8px; text-transform: uppercase; color: var(--gold); margin: 0; }
-        .tagline { font-style: italic; color: var(--text-dim); margin-top: 10px; }
-
-        /* SİNEMA GALERİSİ */
-        .gallery-container { padding: 40px 20px; max-width: 1300px; margin: auto; }
-        .category-title { border-left: 3px solid var(--gold); padding-left: 15px; margin: 40px 0 20px; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 2px; }
-        
-        .movie-grid {
+        /* DEV VİDEO DUVARI */
+        .video-wall {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 5px;
+            background: #000;
         }
-        .movie-card { background: var(--panel-bg); border-radius: 4px; overflow: hidden; transition: 0.4s; border: 1px solid #1a1a1a; }
-        .movie-card:hover { transform: translateY(-5px); border-color: var(--gold); }
-        .video-box { position: relative; padding-bottom: 56.25%; height: 0; }
-        .video-box iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-        .movie-info { padding: 15px; }
-        .movie-info h3 { margin: 0; font-size: 1rem; color: var(--gold); }
-        .movie-info p { font-size: 0.85rem; color: var(--text-dim); margin: 8px 0 0; line-height: 1.4; }
+        .movie-item {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 16/9;
+            border: 1px solid #111;
+        }
+        .movie-item iframe {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 120%; height: 120%;
+            transform: translate(-50%, -50%);
+            pointer-events: none; /* Üzerine tıklamayı engelle, sadece izle */
+        }
+        .overlay {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            padding: 20px;
+            opacity: 0;
+            transition: 0.5s;
+        }
+        .movie-item:hover .overlay { opacity: 1; }
+        .movie-title { font-size: 1.2rem; color: var(--gold); margin: 0; text-transform: uppercase; letter-spacing: 2px; }
 
-        /* ALT PANEL (RADYO - GRAFİK - KÜTÜPHANE) */
-        .control-panel { background: #0a0a0a; padding: 50px 20px; border-top: 1px solid #1a1a1a; }
-        .panel-grid { max-width: 1100px; margin: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+        /* KONTROL MERKEZİ (ALT ŞERİT) */
+        .dashboard {
+            background: var(--panel);
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 30px;
+            align-items: center;
+            border-top: 1px solid #222;
+        }
+        .radio-player { text-align: center; }
+        audio { width: 100%; filter: invert(1); opacity: 0.4; }
         
-        .radio-section { text-align: center; border: 1px solid #222; padding: 20px; border-radius: 8px; }
-        audio { width: 100%; filter: invert(1); opacity: 0.5; margin-top: 15px; }
+        .book-shelf { display: flex; flex-direction: column; gap: 8px; }
+        .book-link { color: #666; text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
+        .book-link:hover { color: var(--gold); }
 
-        .book-link { display: block; color: #fff; text-decoration: none; padding: 10px 0; border-bottom: 1px solid #222; font-size: 0.9rem; transition: 0.3s; }
-        .book-link:hover { color: var(--gold); padding-left: 10px; }
+        @media (max-width: 768px) {
+            .dashboard { grid-template-columns: 1fr; }
+            .video-wall { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
 
-<header>
-    <h1 class="main-title">Kaş Sanat Filmleri Seçkisi</h1>
-    <p class="tagline">Görsel Estetik, Otobiyografi ve Entelektüel Derinlik</p>
-</header>
-
-<div class="gallery-container">
-    <!-- KATEGORİ 1: GÖRSEL ŞÖLEN VE ESTETİK -->
-    <h2 class="category-title">Görsel Estetik & Saf Sinema</h2>
-    <div class="movie-grid">
-        <div class="movie-card">
-            <div class="video-box"><iframe src="https://www.youtube.com/embed/S_T09p_U6pM"></iframe></div>
-            <div class="movie-info"><h3>The Fall (2006) - Tarsem Singh</h3><p>Gerçek mekânlarda çekilmiş, CGI içermeyen bir görsel rüya.</p></div>
-        </div>
-        <div class="movie-card">
-            <div class="video-box"><iframe src="https://www.youtube.com/embed/r_6vPr_LpSg"></iframe></div>
-            <div class="movie-info"><h3>The Lighthouse (2019)</h3><p>Siyah-beyaz ekspresyonist estetiğin modern zirvesi.</p></div>
-        </div>
+<!-- VİDEO DUVARI: AÇILDIĞI GİBİ OYNAYAN SİNEMATİK SEÇKİ -->
+<div class="video-wall">
+    <!-- Tarkovsky - The Mirror -->
+    <div class="movie-item">
+        <iframe src="https://www.youtube.com/embed/H079K-s_6zM?autoplay=1&mute=1&controls=0&loop=1&playlist=H079K-s_6zM" allow="autoplay"></iframe>
+        <div class="overlay"><p class="movie-title">The Mirror (1975)</p></div>
     </div>
-
-    <!-- KATEGORİ 2: OTOBİYOGRAFİK VE FELSEFİ -->
-    <h2 class="category-title">Otobiyografik & Felsefi Yolculuklar</h2>
-    <div class="movie-grid">
-        <div class="movie-card">
-            <div class="video-box"><iframe src="https://www.youtube.com/embed/H079K-s_6zM"></iframe></div>
-            <div class="movie-info"><h3>The Mirror (1975) - Andrei Tarkovsky</h3><p>Tarkovsky'nin kendi çocukluk ve savaş anılarına dair şiirsel otobiyografisi.</p></div>
-        </div>
-        <div class="movie-card">
-            <div class="video-box"><iframe src="https://www.youtube.com/embed/n9u6TOn6i6Y"></iframe></div>
-            <div class="movie-info"><h3>Samsara (2011)</h3><p>İnsanlığın ve doğanın döngüsünü sözsüz bir şekilde anlatan entelektüel bir başyapıt.</p></div>
-        </div>
-        <div class="movie-card">
-            <div class="video-box"><iframe src="https://www.youtube.com/embed/v9S_m8P8YvU"></iframe></div>
-            <div class="movie-info"><h3>Loving Vincent (2017)</h3><p>Van Gogh'un hayatını ve ölümünü anlatan, yağlı boya tablolardan oluşan eşsiz bir otobiyografik çalışma.</p></div>
-        </div>
+    <!-- Tarsem Singh - The Fall -->
+    <div class="movie-item">
+        <iframe src="https://www.youtube.com/embed/S_T09p_U6pM?autoplay=1&mute=1&controls=0&loop=1&playlist=S_T09p_U6pM" allow="autoplay"></iframe>
+        <div class="overlay"><p class="movie-title">The Fall (2006)</p></div>
+    </div>
+    <!-- Loving Vincent -->
+    <div class="movie-item">
+        <iframe src="https://www.youtube.com/embed/v9S_m8P8YvU?autoplay=1&mute=1&controls=0&loop=1&playlist=v9S_m8P8YvU" allow="autoplay"></iframe>
+        <div class="overlay"><p class="movie-title">Loving Vincent (2017)</p></div>
+    </div>
+    <!-- Samsara -->
+    <div class="movie-item">
+        <iframe src="https://www.youtube.com/embed/n9u6TOn6i6Y?autoplay=1&mute=1&controls=0&loop=1&playlist=n9u6TOn6i6Y" allow="autoplay"></iframe>
+        <div class="overlay"><p class="movie-title">Samsara (2011)</p></div>
     </div>
 </div>
 
-<div class="control-panel">
-    <div class="panel-grid">
-        <!-- RADYO -->
-        <div class="radio-section">
-            <span style="color: var(--gold); font-size: 0.8rem; letter-spacing: 2px;">DÜNYA MÜZİĞİ RADYOSU</span>
-            <audio controls><source src="https://icecast.radiofrance.fr/fip-midfi.mp3" type="audio/mpeg"></audio>
-        </div>
+<div class="dashboard">
+    <!-- ANALİZ -->
+    <div style="height: 150px;">
+        <canvas id="weatherChart"></canvas>
+    </div>
 
-        <!-- GRAFİK -->
-        <div style="height: 200px;">
-            <canvas id="weatherChart"></canvas>
-        </div>
+    <!-- RADYO -->
+    <div class="radio-player">
+        <p style="color: var(--gold); letter-spacing: 3px; font-size: 0.8rem; margin-bottom: 10px;">DÜNYA MÜZİĞİ RADYOSU</p>
+        <audio controls autoplay>
+            <source src="https://icecast.radiofrance.fr/fip-midfi.mp3" type="audio/mpeg">
+        </audio>
+    </div>
 
-        <!-- KİTAPLIK -->
-        <div>
-            <span style="color: var(--gold); font-size: 0.8rem; letter-spacing: 2px;">TEKNİK DÖKÜMANLAR</span>
-            <div style="margin-top: 15px;">
-                <a href="frekanslar.pdf" class="book-link">📡 Frekans Analizleri</a>
-                <a href="bonsai_teknikleri.pdf" class="book-link">🌳 Bonsai Stil Rehberi</a>
-                <a href="mimari_cizim.pdf" class="book-link">📐 Mimari Proje Notları</a>
-            </div>
-        </div>
+    <!-- KİTAPLIK -->
+    <div class="book-shelf">
+        <p style="color: var(--gold); font-size: 0.8rem; letter-spacing: 2px;">KÜTÜPHANE</p>
+        <a href="frekanslar.pdf" class="book-link">📡 Frekans Verileri</a>
+        <a href="bonsai_teknikleri.pdf" class="book-link">🌳 Bonsai Sanatı</a>
+        <a href="mimari_cizim.pdf" class="book-link">📐 Mimari Eskizler</a>
     </div>
 </div>
 
 <script>
+    // Hava durumu grafiği
     fetch('results.json')
         .then(res => res.json())
         .then(data => {
@@ -121,11 +127,10 @@
                 data: {
                     labels: data.map(d => d.nokta),
                     datasets: [{
-                        label: 'Antalya Isı Analizi',
                         data: data.map(d => d.deger),
-                        borderColor: '#d4af37',
+                        borderColor: '#c5a059',
                         borderWidth: 1,
-                        pointRadius: 2,
+                        pointRadius: 0,
                         tension: 0.4,
                         fill: false
                     }]
@@ -135,8 +140,8 @@
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: { 
-                        x: { ticks: { color: '#444', font: { size: 10 } }, grid: { display: false } },
-                        y: { ticks: { color: '#444', font: { size: 10 } }, grid: { color: '#1a1a1a' } }
+                        x: { ticks: { color: '#333' }, grid: { display: false } },
+                        y: { ticks: { display: false }, grid: { color: '#1a1a1a' } }
                     }
                 }
             });
