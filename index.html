@@ -3,111 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kaş Sanat & Bilgi Üssü</title>
+    <title>Kaş AI Sinema & Bilgi Üssü</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        :root { --bg: #0a0a0a; --gold: #c5a059; --card: #151515; }
-        body { font-family: 'Segoe UI', serif; background: var(--bg); color: #e0e0e0; margin: 0; padding: 20px; }
-        .container { max-width: 1000px; margin: auto; }
+        :root { --bg: #080808; --gold: #d4af37; --panel: #121212; --text: #e0e0e0; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; }
+        .container { max-width: 1100px; margin: auto; }
         
-        /* RADYO (EN ÜSTTE) */
-        .radio-panel {
-            background: var(--card); border: 1px solid var(--gold); border-radius: 15px;
-            padding: 20px; text-align: center; margin-bottom: 30px;
+        /* AKILLI SİNEMA MOTORU */
+        .ai-search-box {
+            background: linear-gradient(145deg, #1a1a1a, #0a0a0a);
+            border: 1px solid #333; border-radius: 20px; padding: 30px;
+            text-align: center; margin-bottom: 40px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
         }
-        audio { width: 100%; filter: invert(1); opacity: 0.6; }
-
-        /* SİNEMA SEÇKİSİ */
-        .cinema-section { margin-bottom: 40px; }
-        .movie-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .movie-card {
-            background: var(--card); border-radius: 10px; overflow: hidden;
-            border: 1px solid #222; transition: 0.3s; text-decoration: none; color: white;
+        .search-input {
+            width: 70%; padding: 15px; border-radius: 30px; border: 1px solid #444;
+            background: #000; color: var(--gold); font-size: 16px; outline: none; margin-bottom: 20px;
         }
-        .movie-card:hover { border-color: var(--gold); transform: translateY(-5px); }
-        .movie-thumb { height: 150px; background: #222; display: flex; align-items: center; justify-content: center; font-size: 40px; }
-        .movie-info { padding: 15px; }
-        .movie-info h3 { margin: 0; font-size: 1rem; color: var(--gold); }
-        .movie-info p { font-size: 0.8rem; color: #888; margin: 10px 0 0; }
+        .ai-btn {
+            background: var(--gold); color: #000; border: none; padding: 12px 25px;
+            border-radius: 25px; cursor: pointer; font-weight: bold; margin: 5px; transition: 0.3s;
+        }
+        .ai-btn:hover { transform: scale(1.05); opacity: 0.9; }
 
-        /* ANALİZ VE KÜTÜPHANE (ALTTA) */
-        .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px; }
-        .chart-box { background: var(--card); padding: 20px; border-radius: 10px; height: 200px; }
-        .library-box { background: var(--card); padding: 20px; border-radius: 10px; }
-        .lib-link { display: block; color: #aaa; text-decoration: none; padding: 8px 0; border-bottom: 1px solid #222; font-size: 0.9rem; }
-        .lib-link:hover { color: var(--gold); }
+        /* RADYO VE ANALİZ ŞERİDİ */
+        .dashboard-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 40px; }
+        .card { background: var(--panel); border-radius: 15px; padding: 20px; border: 1px solid #222; }
+        audio { width: 100%; filter: invert(1); opacity: 0.5; margin-top: 15px; }
+
+        /* KÜTÜPHANE VE TEKNİK VERİ */
+        .tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .tech-link {
+            background: #1a1a1a; padding: 20px; border-radius: 12px; text-decoration: none;
+            color: var(--text); text-align: center; border-bottom: 3px solid var(--gold); transition: 0.3s;
+        }
+        .tech-link:hover { background: var(--gold); color: #000; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- RADYO -->
-    <div class="radio-panel">
-        <h3 style="margin:0 0 10px 0; color: var(--gold); letter-spacing: 2px;">📻 DÜNYA MÜZİĞİ FREKANSI</h3>
-        <audio controls autoplay>
-            <source src="https://icecast.radiofrance.fr/fip-midfi.mp3" type="audio/mpeg">
-        </audio>
-    </div>
-
-    <!-- SİNEMA SEÇKİSİ (AÇILIR LİNKLER) -->
-    <div class="cinema-section">
-        <h2 style="text-align:center; font-weight: 300; letter-spacing: 3px;">ENTELLEKTÜEL SİNEMA ARŞİVİ</h2>
-        <div class="movie-grid">
-            <!-- Her bir kart doğrudan YouTube'un ana sitesine veya resmi izleme sayfasına yönlendirir -->
-            <a href="https://www.youtube.com/watch?v=S_T09p_U6pM" target="_blank" class="movie-card">
-                <div class="movie-thumb">🎞️</div>
-                <div class="movie-info"><h3>The Fall (2006)</h3><p>Görsel sanatın zirvesi. Destansı bir hikaye.</p></div>
-            </a>
-            <a href="https://www.youtube.com/watch?v=H079K-s_6zM" target="_blank" class="movie-card">
-                <div class="movie-thumb">📽️</div>
-                <div class="movie-info"><h3>The Mirror (1975)</h3><p>Tarkovsky'nin şiirsel ve otobiyografik başyapıtı.</p></div>
-            </a>
-            <a href="https://www.youtube.com/watch?v=n9u6TOn6i6Y" target="_blank" class="movie-card">
-                <div class="movie-thumb">🌍</div>
-                <div class="movie-info"><h3>Samsara (2011)</h3><p>Dünya üzerindeki yaşamın dilsiz ve görkemli kaydı.</p></div>
-            </a>
+    <!-- 1. AKILLI SİNEMA TARAYICI (AI HUB) -->
+    <div class="ai-search-box">
+        <h2 style="color: var(--gold); letter-spacing: 2px;">AI SİNEMA PORTALI</h2>
+        <p style="color: #666; font-size: 14px; margin-bottom: 20px;">Dünya müziği eşliğinde bağımsız film kütüphanelerini tara.</p>
+        <input type="text" id="movieSearch" class="search-input" placeholder="Film, yönetmen veya tür yazın...">
+        <div class="button-group">
+            <button class="ai-btn" onclick="searchMovie('mubi')">MUBI Tara</button>
+            <button class="ai-btn" onclick="searchMovie('criterion')">Criterion Collection</button>
+            <button class="ai-btn" onclick="searchMovie('imdb')">IMDb Entelektüel</button>
         </div>
     </div>
 
-    <div class="footer-grid">
-        <!-- ANALİZ -->
-        <div class="chart-box">
+    <!-- 2. RADYO VE ANALİZ -->
+    <div class="dashboard-row">
+        <div class="card">
+            <span style="color: var(--gold); font-size: 12px; letter-spacing: 2px;">📻 CANLI YAYIN</span>
+            <audio controls autoplay><source src="https://icecast.radiofrance.fr/fip-midfi.mp3" type="audio/mpeg"></audio>
+        </div>
+        <div class="card" style="height: 120px;">
             <canvas id="weatherChart"></canvas>
         </div>
-        <!-- KİTAPLIK -->
-        <div class="library-box">
-            <h4 style="margin:0 0 10px 0; color: var(--gold);">DÖKÜMANLAR</h4>
-            <a href="frekanslar.pdf" class="lib-link">📡 Frekans Analizi</a>
-            <a href="bonsai_teknikleri.pdf" class="lib-link">🌳 Bonsai Stil ve Budama</a>
-            <a href="mimari_cizim.pdf" class="lib-link">📐 Mimari Tasarım Notları</a>
-        </div>
+    </div>
+
+    <!-- 3. TEKNİK KÜTÜPHANE -->
+    <div class="tech-grid">
+        <a href="frekanslar.pdf" class="tech-link">📡 Frekans Analizleri</a>
+        <a href="bonsai_teknikleri.pdf" class="tech-link">🌳 Bonsai Stil Rehberi</a>
+        <a href="mimari_cizim.pdf" class="tech-link">📐 Mimari Projeler</a>
+        <a href="python_notlar.pdf" class="tech-link">🐍 Python Notları</a>
     </div>
 </div>
 
 <script>
-    fetch('results.json')
-        .then(res => res.json())
-        .then(data => {
-            const ctx = document.getElementById('weatherChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: data.map(d => d.nokta),
-                    datasets: [{
-                        data: data.map(d => d.deger),
-                        borderColor: '#c5a059',
-                        borderWidth: 1,
-                        tension: 0.4,
-                        fill: false
-                    }]
-                },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: { x: { display: false }, y: { ticks: { color: '#444' } } }
-                }
-            });
+    // Akıllı Arama Fonksiyonu
+    function searchMovie(platform) {
+        const query = document.getElementById('movieSearch').value;
+        let url = '';
+        if(platform === 'mubi') url = `https://mubi.com/tr/search/films?query=${query}`;
+        if(platform === 'criterion') url = `https://www.criterion.com/search#stq=${query}`;
+        if(platform === 'imdb') url = `https://www.imdb.com/find?q=${query}&s=tt&ttype=ft`;
+        
+        if(query) window.open(url, '_blank');
+        else alert('Lütfen önce bir film ismi girin.');
+    }
+
+    // Isı Analiz Grafiği
+    fetch('results.json').then(res => res.json()).then(data => {
+        const ctx = document.getElementById('weatherChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.map(d => d.nokta),
+                datasets: [{
+                    data: data.map(d => d.deger),
+                    borderColor: '#d4af37',
+                    borderWidth: 1,
+                    pointRadius: 0,
+                    tension: 0.4,
+                    fill: true,
+                    backgroundColor: 'rgba(212, 175, 55, 0.05)'
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { x: { display: false }, y: { display: false } }
+            }
         });
+    });
 </script>
 
 </body>
