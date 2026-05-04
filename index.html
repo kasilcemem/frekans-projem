@@ -3,121 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kaş Analiz & Bilgi Üssü</title>
+    <title>Kaş Sinema & Analiz Üssü</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --primary: #2c3e50;
-            --accent: #3498db;
-            --bg: #f8f9fa;
+            --bg-dark: #0a0a0a;
+            --accent-gold: #c0a080;
+            --text-gray: #a0a0a0;
         }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #333; }
-        .container { max-width: 1000px; margin: auto; background: white; padding: 30px; border-radius: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); margin: 0; color: #fff; scroll-behavior: smooth; }
         
-        h1, h2 { text-align: center; color: var(--primary); }
-
-        /* RADYO BÖLÜMÜ */
-        .radio-box {
-            background: var(--primary);
-            color: white;
+        /* FULL SİNEMA EKRANI (HERO SECTION) */
+        .cinema-hero {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.5), var(--bg-dark)), url('https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            text-align: center;
             padding: 20px;
-            border-radius: 20px;
-            text-align: center;
-            margin: 20px 0 40px 0;
-            border-bottom: 5px solid var(--accent);
         }
-        .live-tag {
-            background: #e74c3c;
-            padding: 2px 8px;
-            border-radius: 5px;
-            font-size: 12px;
-            font-weight: bold;
-            animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
-        audio { width: 100%; margin-top: 15px; filter: invert(100%) hue-rotate(180deg) brightness(1.5); }
 
-        /* GRAFİK */
-        .chart-container { height: 300px; margin-bottom: 50px; }
+        .cinema-title { font-size: 3rem; letter-spacing: 5px; color: var(--accent-gold); margin: 0; text-transform: uppercase; }
+        .cinema-subtitle { font-size: 1.2rem; color: var(--text-gray); margin-bottom: 30px; }
 
-        /* KÜTÜPHANE */
-        .shelf { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
-            gap: 20px; 
-            margin-top: 20px;
+        /* VİDEO GALERİSİ */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 40px;
+            max-width: 1200px;
+            margin: auto;
         }
-        .book { 
-            background: #ecf0f1; 
-            color: var(--primary); 
-            padding: 25px; 
-            border-radius: 10px 20px 20px 10px; 
-            text-decoration: none; 
-            font-weight: bold;
+        .video-card { background: #151515; border-radius: 15px; overflow: hidden; border: 1px solid #222; }
+        iframe { width: 100%; aspect-ratio: 16/9; border: none; }
+
+        /* RADYO VE ANALİZ (ZARİF ALT PANEL) */
+        .bottom-panel {
+            background: #111;
+            padding: 40px 20px;
+            border-top: 1px solid #222;
+        }
+        .container-slim { max-width: 900px; margin: auto; }
+        
+        .radio-mini {
+            background: rgba(192, 160, 128, 0.1);
+            border: 1px solid var(--accent-gold);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 40px;
             text-align: center;
-            border-left: 10px solid var(--accent);
-            transition: 0.3s;
-            box-shadow: 5px 5px 15px rgba(0,0,0,0.05);
         }
-        .book:hover { transform: translateY(-10px); background: var(--accent); color: white; }
+        audio { width: 100%; filter: invert(1); opacity: 0.7; }
+
+        /* KÜTÜPHANE VE GRAFİK */
+        .grid-half { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .chart-box { height: 250px; }
+        .book-list { display: flex; flex-direction: column; gap: 10px; }
+        .book-item { 
+            color: var(--text-gray); text-decoration: none; padding: 10px; 
+            border-bottom: 1px solid #222; transition: 0.3s;
+        }
+        .book-item:hover { color: var(--accent-gold); padding-left: 15px; }
+
+        @media (max-width: 768px) { .grid-half { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>📍 Kaş Kontrol Merkezi</h1>
+<section class="cinema-hero">
+    <p class="cinema-subtitle">Bağımsız Sinema Seçkisi</p>
+    <h1 class="cinema-title">Görsel Şölen</h1>
+    <p style="max-width: 600px; color: var(--text-gray); margin-top: 20px;">
+        Kaş'ın sakinliğinde, estetiği ve derinliğiyle ön plana çıkan bağımsız yapımlara göz atın.
+    </p>
+</section>
 
-    <!-- 1. BÖLÜM: ANALİZ GRAFİĞİ -->
-    <div class="chart-container">
-        <canvas id="weatherChart"></canvas>
+<div class="video-grid">
+    <!-- Bağımsız Sinemadan Örnekler (Görselliği Yüksek Filmler) -->
+    <div class="video-card">
+        <iframe src="https://www.youtube.com/embed/S_T09p_U6pM" title="The Fall"></iframe>
+        <div style="padding: 15px;"><strong>The Fall (2006)</strong><br><small>Görsel bir başyapıt.</small></div>
     </div>
-
-    <!-- 2. BÖLÜM: DÜNYA MÜZİĞİ RADYOSU -->
-    <div class="radio-box">
-        <span class="live-tag">CANLI</span>
-        <h3 style="margin: 10px 0;">Dünya Müziği Frekansı (FIP)</h3>
-        <p style="font-size: 13px; color: #bdc3c7;">Kaş'ta huzurlu bir çalışma için global seçkiler.</p>
-        <audio controls>
-            <source src="https://icecast.radiofrance.fr/fip-midfi.mp3" type="audio/mpeg">
-            Tarayıcınız radyoyu desteklemiyor.
-        </audio>
+    <div class="video-card">
+        <iframe src="https://www.youtube.com/embed/n9u6TOn6i6Y" title="Samsara"></iframe>
+        <div style="padding: 15px;"><strong>Samsara (2011)</strong><br><small>Sözsüz, saf görsel anlatım.</small></div>
     </div>
+    <div class="video-card">
+        <iframe src="https://www.youtube.com/embed/r_6vPr_LpSg" title="The Lighthouse"></iframe>
+        <div style="padding: 15px;"><strong>The Lighthouse (2019)</strong><br><small>Siyah-beyaz estetik zirvesi.</small></div>
+    </div>
+</div>
 
-    <!-- 3. BÖLÜM: PDF KÜTÜPHANESİ -->
-    <div class="library-section">
-        <h2>📚 Kitaplık</h2>
-        <div class="shelf">
-            <a href="frekanslar.pdf" class="book">📡<br>Frekanslar</a>
-            <a href="bonsai_teknikleri.pdf" class="book" style="border-left-color: #27ae60;">🌳<br>Bonsai Teknikleri</a>
-            <a href="mimari_cizim.pdf" class="book" style="border-left-color: #e67e22;">📐<br>Mimari Çizim</a>
-            <a href="python_notlar.pdf" class="book" style="border-left-color: #9b59b6;">🐍<br>Python Notları</a>
+<div class="bottom-panel">
+    <div class="container-slim">
+        <!-- RADYO -->
+        <div class="radio-mini">
+            <span style="color: var(--accent-gold); font-size: 12px; text-transform: uppercase;">Arka Plan Müziği</span>
+            <audio controls>
+                <source src="https://icecast.radiofrance.fr/fip-midfi.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+
+        <div class="grid-half">
+            <!-- ANALİZ -->
+            <div class="chart-box">
+                <h3 style="font-size: 14px; text-transform: uppercase; color: var(--accent-gold);">Bölgesel Isı Analizi</h3>
+                <canvas id="weatherChart"></canvas>
+            </div>
+            <!-- KİTAPLIK -->
+            <div>
+                <h3 style="font-size: 14px; text-transform: uppercase; color: var(--accent-gold);">Bilgi Kütüphanesi</h3>
+                <div class="book-list">
+                    <a href="frekanslar.pdf" class="book-item">📡 Frekanslar ve Analiz</a>
+                    <a href="bonsai_teknikleri.pdf" class="book-item">🌳 Bonsai Teknik Rehberi</a>
+                    <a href="mimari_cizim.pdf" class="book-item">📐 Mimari Çizim Prensipleri</a>
+                    <a href="python_notlar.pdf" class="book-item">🐍 Python Programlama</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
-    // Verileri JSON'dan çekip grafiğe basan motor
     fetch('results.json')
         .then(res => res.json())
         .then(data => {
             const ctx = document.getElementById('weatherChart').getContext('2d');
             new Chart(ctx, {
-                type: 'bar',
+                type: 'line',
                 data: {
                     labels: data.map(d => d.nokta),
                     datasets: [{
-                        label: 'Sıcaklık (°C)',
+                        label: '°C',
                         data: data.map(d => d.deger),
-                        backgroundColor: '#3498db',
-                        borderRadius: 10,
-                        barThickness: 40
+                        borderColor: '#c0a080',
+                        borderWidth: 2,
+                        fill: true,
+                        backgroundColor: 'rgba(192, 160, 128, 0.1)',
+                        tension: 0.4
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
-                    scales: { y: { beginAtZero: false, grid: { display: false } }, x: { grid: { display: false } } }
+                    scales: { 
+                        y: { grid: { color: '#222' }, ticks: { color: '#555' } },
+                        x: { grid: { display: false }, ticks: { color: '#555' } }
+                    }
                 }
             });
         });
