@@ -1,16 +1,28 @@
 import json
 
-# Örnek sinyal verileri
-data = [40, 68, 502, 700, 350, 60]
+# Buradaki sayıları istediğin zaman değiştirebilirsin
+veriler = [120, 150, 110, 180, 210, 195, 250]
 
-def analiz_et(liste):
+def detayli_analiz(liste):
     sonuclar = []
-    for i in range(1, len(liste)):
-        fark = liste[i] - liste[i-1]
-        sonuclar.append({"nokta": i, "deger": liste[i], "fark": fark})
+    for i in range(len(liste)):
+        deger = liste[i]
+        degisim = 0
+        durum = "Başlangıç"
+        
+        if i > 0:
+            degisim = deger - liste[i-1]
+            durum = "Yükseliş" if degisim > 0 else "Düşüş"
+        
+        sonuclar.append({
+            "nokta": i + 1,
+            "deger": deger,
+            "degisim": degisim,
+            "durum": durum
+        })
     return sonuclar
 
 if __name__ == "__main__":
-    analiz = analiz_et(data)
+    analiz = detayli_analiz(veriler)
     with open("results.json", "w") as f:
         json.dump(analiz, f)
