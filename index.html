@@ -3,127 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kaş Sinema & Analiz Üssü</title>
+    <title>Kaş Sanat & Sinema Arşivi</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
-            --bg-dark: #0a0a0a;
-            --accent-gold: #c0a080;
-            --text-gray: #a0a0a0;
+            --bg-deep: #050505;
+            --panel-bg: #121212;
+            --gold: #d4af37;
+            --text-dim: #888;
         }
-        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); margin: 0; color: #fff; scroll-behavior: smooth; }
+        body { font-family: 'Georgia', serif; background: var(--bg-deep); color: #e0e0e0; margin: 0; padding: 0; scroll-behavior: smooth; }
         
-        /* FULL SİNEMA EKRANI (HERO SECTION) */
-        .cinema-hero {
-            height: 80vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.5), var(--bg-dark)), url('https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            text-align: center;
-            padding: 20px;
-        }
+        /* HEADER */
+        header { padding: 60px 20px; text-align: center; border-bottom: 1px solid #222; }
+        .main-title { font-size: 2.5rem; letter-spacing: 8px; text-transform: uppercase; color: var(--gold); margin: 0; }
+        .tagline { font-style: italic; color: var(--text-dim); margin-top: 10px; }
 
-        .cinema-title { font-size: 3rem; letter-spacing: 5px; color: var(--accent-gold); margin: 0; text-transform: uppercase; }
-        .cinema-subtitle { font-size: 1.2rem; color: var(--text-gray); margin-bottom: 30px; }
-
-        /* VİDEO GALERİSİ */
-        .video-grid {
+        /* SİNEMA GALERİSİ */
+        .gallery-container { padding: 40px 20px; max-width: 1300px; margin: auto; }
+        .category-title { border-left: 3px solid var(--gold); padding-left: 15px; margin: 40px 0 20px; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 2px; }
+        
+        .movie-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            padding: 40px;
-            max-width: 1200px;
-            margin: auto;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
         }
-        .video-card { background: #151515; border-radius: 15px; overflow: hidden; border: 1px solid #222; }
-        iframe { width: 100%; aspect-ratio: 16/9; border: none; }
+        .movie-card { background: var(--panel-bg); border-radius: 4px; overflow: hidden; transition: 0.4s; border: 1px solid #1a1a1a; }
+        .movie-card:hover { transform: translateY(-5px); border-color: var(--gold); }
+        .video-box { position: relative; padding-bottom: 56.25%; height: 0; }
+        .video-box iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+        .movie-info { padding: 15px; }
+        .movie-info h3 { margin: 0; font-size: 1rem; color: var(--gold); }
+        .movie-info p { font-size: 0.85rem; color: var(--text-dim); margin: 8px 0 0; line-height: 1.4; }
 
-        /* RADYO VE ANALİZ (ZARİF ALT PANEL) */
-        .bottom-panel {
-            background: #111;
-            padding: 40px 20px;
-            border-top: 1px solid #222;
-        }
-        .container-slim { max-width: 900px; margin: auto; }
+        /* ALT PANEL (RADYO - GRAFİK - KÜTÜPHANE) */
+        .control-panel { background: #0a0a0a; padding: 50px 20px; border-top: 1px solid #1a1a1a; }
+        .panel-grid { max-width: 1100px; margin: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
         
-        .radio-mini {
-            background: rgba(192, 160, 128, 0.1);
-            border: 1px solid var(--accent-gold);
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 40px;
-            text-align: center;
-        }
-        audio { width: 100%; filter: invert(1); opacity: 0.7; }
+        .radio-section { text-align: center; border: 1px solid #222; padding: 20px; border-radius: 8px; }
+        audio { width: 100%; filter: invert(1); opacity: 0.5; margin-top: 15px; }
 
-        /* KÜTÜPHANE VE GRAFİK */
-        .grid-half { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-        .chart-box { height: 250px; }
-        .book-list { display: flex; flex-direction: column; gap: 10px; }
-        .book-item { 
-            color: var(--text-gray); text-decoration: none; padding: 10px; 
-            border-bottom: 1px solid #222; transition: 0.3s;
-        }
-        .book-item:hover { color: var(--accent-gold); padding-left: 15px; }
-
-        @media (max-width: 768px) { .grid-half { grid-template-columns: 1fr; } }
+        .book-link { display: block; color: #fff; text-decoration: none; padding: 10px 0; border-bottom: 1px solid #222; font-size: 0.9rem; transition: 0.3s; }
+        .book-link:hover { color: var(--gold); padding-left: 10px; }
     </style>
 </head>
 <body>
 
-<section class="cinema-hero">
-    <p class="cinema-subtitle">Bağımsız Sinema Seçkisi</p>
-    <h1 class="cinema-title">Görsel Şölen</h1>
-    <p style="max-width: 600px; color: var(--text-gray); margin-top: 20px;">
-        Kaş'ın sakinliğinde, estetiği ve derinliğiyle ön plana çıkan bağımsız yapımlara göz atın.
-    </p>
-</section>
+<header>
+    <h1 class="main-title">Kaş Sanat Filmleri Seçkisi</h1>
+    <p class="tagline">Görsel Estetik, Otobiyografi ve Entelektüel Derinlik</p>
+</header>
 
-<div class="video-grid">
-    <!-- Bağımsız Sinemadan Örnekler (Görselliği Yüksek Filmler) -->
-    <div class="video-card">
-        <iframe src="https://www.youtube.com/embed/S_T09p_U6pM" title="The Fall"></iframe>
-        <div style="padding: 15px;"><strong>The Fall (2006)</strong><br><small>Görsel bir başyapıt.</small></div>
+<div class="gallery-container">
+    <!-- KATEGORİ 1: GÖRSEL ŞÖLEN VE ESTETİK -->
+    <h2 class="category-title">Görsel Estetik & Saf Sinema</h2>
+    <div class="movie-grid">
+        <div class="movie-card">
+            <div class="video-box"><iframe src="https://www.youtube.com/embed/S_T09p_U6pM"></iframe></div>
+            <div class="movie-info"><h3>The Fall (2006) - Tarsem Singh</h3><p>Gerçek mekânlarda çekilmiş, CGI içermeyen bir görsel rüya.</p></div>
+        </div>
+        <div class="movie-card">
+            <div class="video-box"><iframe src="https://www.youtube.com/embed/r_6vPr_LpSg"></iframe></div>
+            <div class="movie-info"><h3>The Lighthouse (2019)</h3><p>Siyah-beyaz ekspresyonist estetiğin modern zirvesi.</p></div>
+        </div>
     </div>
-    <div class="video-card">
-        <iframe src="https://www.youtube.com/embed/n9u6TOn6i6Y" title="Samsara"></iframe>
-        <div style="padding: 15px;"><strong>Samsara (2011)</strong><br><small>Sözsüz, saf görsel anlatım.</small></div>
-    </div>
-    <div class="video-card">
-        <iframe src="https://www.youtube.com/embed/r_6vPr_LpSg" title="The Lighthouse"></iframe>
-        <div style="padding: 15px;"><strong>The Lighthouse (2019)</strong><br><small>Siyah-beyaz estetik zirvesi.</small></div>
+
+    <!-- KATEGORİ 2: OTOBİYOGRAFİK VE FELSEFİ -->
+    <h2 class="category-title">Otobiyografik & Felsefi Yolculuklar</h2>
+    <div class="movie-grid">
+        <div class="movie-card">
+            <div class="video-box"><iframe src="https://www.youtube.com/embed/H079K-s_6zM"></iframe></div>
+            <div class="movie-info"><h3>The Mirror (1975) - Andrei Tarkovsky</h3><p>Tarkovsky'nin kendi çocukluk ve savaş anılarına dair şiirsel otobiyografisi.</p></div>
+        </div>
+        <div class="movie-card">
+            <div class="video-box"><iframe src="https://www.youtube.com/embed/n9u6TOn6i6Y"></iframe></div>
+            <div class="movie-info"><h3>Samsara (2011)</h3><p>İnsanlığın ve doğanın döngüsünü sözsüz bir şekilde anlatan entelektüel bir başyapıt.</p></div>
+        </div>
+        <div class="movie-card">
+            <div class="video-box"><iframe src="https://www.youtube.com/embed/v9S_m8P8YvU"></iframe></div>
+            <div class="movie-info"><h3>Loving Vincent (2017)</h3><p>Van Gogh'un hayatını ve ölümünü anlatan, yağlı boya tablolardan oluşan eşsiz bir otobiyografik çalışma.</p></div>
+        </div>
     </div>
 </div>
 
-<div class="bottom-panel">
-    <div class="container-slim">
+<div class="control-panel">
+    <div class="panel-grid">
         <!-- RADYO -->
-        <div class="radio-mini">
-            <span style="color: var(--accent-gold); font-size: 12px; text-transform: uppercase;">Arka Plan Müziği</span>
-            <audio controls>
-                <source src="https://icecast.radiofrance.fr/fip-midfi.mp3" type="audio/mpeg">
-            </audio>
+        <div class="radio-section">
+            <span style="color: var(--gold); font-size: 0.8rem; letter-spacing: 2px;">DÜNYA MÜZİĞİ RADYOSU</span>
+            <audio controls><source src="https://icecast.radiofrance.fr/fip-midfi.mp3" type="audio/mpeg"></audio>
         </div>
 
-        <div class="grid-half">
-            <!-- ANALİZ -->
-            <div class="chart-box">
-                <h3 style="font-size: 14px; text-transform: uppercase; color: var(--accent-gold);">Bölgesel Isı Analizi</h3>
-                <canvas id="weatherChart"></canvas>
-            </div>
-            <!-- KİTAPLIK -->
-            <div>
-                <h3 style="font-size: 14px; text-transform: uppercase; color: var(--accent-gold);">Bilgi Kütüphanesi</h3>
-                <div class="book-list">
-                    <a href="frekanslar.pdf" class="book-item">📡 Frekanslar ve Analiz</a>
-                    <a href="bonsai_teknikleri.pdf" class="book-item">🌳 Bonsai Teknik Rehberi</a>
-                    <a href="mimari_cizim.pdf" class="book-item">📐 Mimari Çizim Prensipleri</a>
-                    <a href="python_notlar.pdf" class="book-item">🐍 Python Programlama</a>
-                </div>
+        <!-- GRAFİK -->
+        <div style="height: 200px;">
+            <canvas id="weatherChart"></canvas>
+        </div>
+
+        <!-- KİTAPLIK -->
+        <div>
+            <span style="color: var(--gold); font-size: 0.8rem; letter-spacing: 2px;">TEKNİK DÖKÜMANLAR</span>
+            <div style="margin-top: 15px;">
+                <a href="frekanslar.pdf" class="book-link">📡 Frekans Analizleri</a>
+                <a href="bonsai_teknikleri.pdf" class="book-link">🌳 Bonsai Stil Rehberi</a>
+                <a href="mimari_cizim.pdf" class="book-link">📐 Mimari Proje Notları</a>
             </div>
         </div>
     </div>
@@ -139,13 +121,13 @@
                 data: {
                     labels: data.map(d => d.nokta),
                     datasets: [{
-                        label: '°C',
+                        label: 'Antalya Isı Analizi',
                         data: data.map(d => d.deger),
-                        borderColor: '#c0a080',
-                        borderWidth: 2,
-                        fill: true,
-                        backgroundColor: 'rgba(192, 160, 128, 0.1)',
-                        tension: 0.4
+                        borderColor: '#d4af37',
+                        borderWidth: 1,
+                        pointRadius: 2,
+                        tension: 0.4,
+                        fill: false
                     }]
                 },
                 options: {
@@ -153,8 +135,8 @@
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: { 
-                        y: { grid: { color: '#222' }, ticks: { color: '#555' } },
-                        x: { grid: { display: false }, ticks: { color: '#555' } }
+                        x: { ticks: { color: '#444', font: { size: 10 } }, grid: { display: false } },
+                        y: { ticks: { color: '#444', font: { size: 10 } }, grid: { color: '#1a1a1a' } }
                     }
                 }
             });
