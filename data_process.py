@@ -1,7 +1,7 @@
 import json
 
 # Örnek sinyal verileri
-data = [10, 25, 15, 40, 35, 60]
+data = [40, 68, 502, 700, 350, 60]
 
 def analiz_et(liste):
     sonuclar = []
