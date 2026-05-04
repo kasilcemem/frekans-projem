@@ -1,136 +1,35 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kaş AI Kontrol Merkezi</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        :root { --bg: #0a0a0a; --gold: #d4af37; --panel: #161616; --text: #f0f0f0; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; overflow-x: hidden; }
-        .container { max-width: 1000px; margin: auto; padding-bottom: 100px; }
-
-        /* RADYO PANELİ */
-        .radio-master {
-            background: linear-gradient(145deg, #1a1a1a, #222);
-            border: 1px solid var(--gold); border-radius: 20px;
-            padding: 30px; text-align: center; margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        audio { width: 100%; margin-top: 20px; filter: invert(1) brightness(1.2); }
-
-        /* SİNEMA TARAYICI */
-        .ai-hub {
-            background: var(--panel); border-radius: 20px; padding: 20px;
-            text-align: center; margin-bottom: 30px; border: 1px solid #333;
-        }
-        .search-bar {
-            width: 70%; padding: 12px; border-radius: 20px; border: 1px solid #444;
-            background: #000; color: var(--gold); outline: none;
-        }
-        .hub-btn {
-            background: var(--gold); color: #000; border: none; padding: 10px 18px;
-            border-radius: 20px; cursor: pointer; font-weight: bold; margin: 5px;
-        }
-
-        /* AI SOHBET KUTUSU (YENİ) */
-        #ai-chat-wrapper {
-            position: fixed; bottom: 20px; right: 20px; width: 300px;
-            background: var(--panel); border: 1px solid var(--gold);
-            border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            display: flex; flex-direction: column; overflow: hidden;
-        }
-        #chat-header { background: var(--gold); color: #000; padding: 10px; font-weight: bold; font-size: 14px; }
-        #chat-content { height: 200px; padding: 10px; overflow-y: auto; font-size: 13px; color: #ccc; }
-        .ai-input-area { display: flex; border-top: 1px solid #333; }
-        #ai-input { background: #000; border: none; color: #fff; padding: 10px; flex: 1; outline: none; }
-        #ai-send { background: #333; color: var(--gold); border: none; padding: 10px; cursor: pointer; }
-
-        /* ALT PANEL */
-        .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; }
-        .card { background: var(--panel); border-radius: 20px; padding: 20px; border: 1px solid #222; }
-        .lib-link { display: block; color: #888; text-decoration: none; padding: 8px 0; border-bottom: 1px solid #333; font-size: 14px; }
-        .lib-link:hover { color: var(--gold); }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <!-- RADYO -->
-    <div class="radio-master">
-        <h2 style="margin: 0; color: var(--gold); letter-spacing: 2px;">DÜNYA MÜZİĞİ RADYOSU</h2>
-        <audio controls autoplay><source src="https://icecast.radiofrance.fr/fip-midfi.mp3" type="audio/mpeg"></audio>
-    </div>
-
-    <!-- SİNEMA TARAYICI -->
-    <div class="ai-hub">
-        <input type="text" id="movieInp" class="search-bar" placeholder="Film veya yönetmen...">
-        <button class="hub-btn" onclick="go('mubi')">MUBI</button>
-        <button class="hub-btn" onclick="go('criterion')">Criterion</button>
-    </div>
-
-    <div class="footer-grid">
-        <div class="card" style="height: 150px;"><canvas id="weatherChart"></canvas></div>
-        <div class="card">
-            <h4 style="margin:0 0 10px 0; color: var(--gold);">KÜTÜPHANE</h4>
-            <a href="frekanslar.pdf" class="lib-link">📡 Frekans Verileri</a>
-            <a href="bonsai_teknikleri.pdf" class="lib-link">🌳 Bonsai Teknikleri</a>
-            <a href="mimari_cizim.pdf" class="lib-link">📐 Mimari Projeler</a>
-        </div>
-    </div>
-</div>
-
-<!-- AI ASİSTAN KUTUSU -->
-<div id="ai-chat-wrapper">
-    <div id="chat-header">✨ Kaş AI Asistan</div>
-    <div id="chat-content">Merhaba! Bonsai bakımı, mimari çizimler veya film önerileri hakkında ne sormak istersin?</div>
-    <div class="ai-input-area">
-        <input type="text" id="ai-input" placeholder="Bir şey sor...">
-        <button id="ai-send" onclick="askAI()">👉</button>
-    </div>
-</div>
-
+<!-- Mevcut kodundaki <script> içindeki askAI fonksiyonunu bununla değiştir -->
 <script>
-    // Sinema Arama
-    function go(p) {
-        const q = document.getElementById('movieInp').value;
-        if(!q) return alert('Film adı giriniz.');
-        const urls = { mubi: `https://mubi.com/tr/search/films?query=${q}`, criterion: `https://www.criterion.com/search#stq=${q}` };
-        window.open(urls[p], '_blank');
-    }
+    const aiHafiza = {
+        bonsai: ["Kaş'ın nem oranı bonsai teli için metali genleştirebilir, dikkat et.", "Sıralı kesimler (sıralı kesimler) için şu anki sıcaklık grafiği uygun görünüyor.", "Fidan eğitiminde wiring (tel çekme) yaparken ağacın nefes almasına izin ver."],
+        mimari: ["Çatıyı yükseltme fikrin, ısı yalıtımı için avantaj sağlayabilir.", "Merdiven tasarımlarında kot farkını grafikteki verilere göre optimize edelim.", "Görselleştirmede ışık açısını Kaş'ın iklim verilerine göre ayarlıyorum."],
+        frekans: ["Frekans analizindeki pik noktaları, çevresel parazitlerden kaynaklanıyor olabilir.", "Sinyal gücü stabilizasyonu için PDF'indeki teknik notları kontrol et."]
+    };
 
-    // Basit AI Simülasyonu
     function askAI() {
         const input = document.getElementById('ai-input');
         const content = document.getElementById('chat-content');
-        if(!input.value) return;
+        const userMsg = input.value.toLowerCase();
+        if(!userMsg) return;
 
         content.innerHTML += `<div style="color:var(--gold); margin-top:10px;"><b>Sen:</b> ${input.value}</div>`;
         
-        // Buraya gerçek bir API bağlayabilirsin, şimdilik akıllı cevaplar simüle ediyoruz:
         setTimeout(() => {
-            let response = "Bunu araştırıyorum... Mimari ve teknik detaylar için PDF kütüphanene bakmamı ister misin?";
-            if(input.value.toLowerCase().includes("bonsai")) response = "Bonsai için bugün Kaş havası ideal, nem oranına dikkat et.";
-            content.innerHTML += `<div style="margin-top:5px;"><b>AI:</b> ${response}</div>`;
+            let response = "Bu konuda kütüphanendeki PDF'leri ve güncel analizleri tarıyorum. Daha spesifik bir detay ister misin?";
+            
+            // Basit bir anahtar kelime taraması ile doğru havuzdan cevap çekelim
+            if(userMsg.includes("bonsai")) {
+                response = aiHafiza.bonsai[Math.floor(Math.random() * aiHafiza.bonsai.length)];
+            } else if(userMsg.includes("mimari") || userMsg.includes("çatı")) {
+                response = aiHafiza.mimari[Math.floor(Math.random() * aiHafiza.mimari.length)];
+            } else if(userMsg.includes("frekans") || userMsg.includes("sinyal")) {
+                response = aiHafiza.frekans[Math.floor(Math.random() * aiHafiza.frekans.length)];
+            }
+
+            content.innerHTML += `<div style="margin-top:5px; border-left: 2px solid #333; padding-left: 10px;"><b>AI:</b> ${response}</div>`;
             content.scrollTop = content.scrollHeight;
-        }, 1000);
+        }, 800);
         
         input.value = "";
     }
-
-    // Grafik
-    fetch('results.json').then(r => r.json()).then(d => {
-        const ctx = document.getElementById('weatherChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: d.map(x => x.nokta),
-                datasets: [{ data: d.map(x => x.deger), borderColor: '#d4af37', tension: 0.4, fill: false, pointRadius: 0 }]
-            },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } }
-        });
-    });
 </script>
-
-</body>
-</html>
