@@ -1,9 +1,118 @@
-<!-- Mevcut kodundaki <script> içindeki askAI fonksiyonunu bununla değiştir -->
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaş Kontrol Merkezi</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root { --bg: #0a0a0a; --gold: #d4af37; --panel: #161616; --text: #f0f0f0; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; }
+        .container { max-width: 1000px; margin: auto; padding-bottom: 50px; }
+
+        /* RADYO PANELİ */
+        .radio-master {
+            background: linear-gradient(145deg, #1a1a1a, #222);
+            border: 2px solid var(--gold); border-radius: 20px;
+            padding: 30px; text-align: center; margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        audio { width: 100%; margin-top: 20px; filter: invert(1) brightness(1.2); }
+
+        /* SİNEMA TARAYICI */
+        .ai-hub {
+            background: var(--panel); border-radius: 20px; padding: 25px;
+            text-align: center; margin-bottom: 30px; border: 1px solid #333;
+        }
+        .search-bar {
+            width: 70%; padding: 12px; border-radius: 20px; border: 1px solid #444;
+            background: #000; color: var(--gold); outline: none; margin-bottom: 15px;
+        }
+        .hub-btn {
+            background: var(--gold); color: #000; border: none; padding: 10px 20px;
+            border-radius: 20px; cursor: pointer; font-weight: bold; margin: 5px;
+        }
+
+        /* ALT PANEL (GRAFİK & KÜTÜPHANE) */
+        .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; }
+        .card { background: var(--panel); border-radius: 20px; padding: 20px; border: 1px solid #222; }
+        .lib-link { display: block; color: #888; text-decoration: none; padding: 8px 0; border-bottom: 1px solid #333; font-size: 14px; }
+        .lib-link:hover { color: var(--gold); }
+
+        /* AI SOHBET KUTUSU */
+        #ai-chat-wrapper {
+            position: fixed; bottom: 20px; right: 20px; width: 320px;
+            background: #111; border: 1px solid var(--gold);
+            border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.9);
+            display: flex; flex-direction: column; z-index: 1000;
+        }
+        #chat-header { background: var(--gold); color: #000; padding: 12px; font-weight: bold; font-size: 14px; }
+        #chat-content { height: 250px; padding: 15px; overflow-y: auto; font-size: 13px; color: #ccc; line-height: 1.5; }
+        .ai-input-area { display: flex; border-top: 1px solid #333; }
+        #ai-input { background: #000; border: none; color: #fff; padding: 12px; flex: 1; outline: none; }
+        #ai-send { background: #222; color: var(--gold); border: none; padding: 12px; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- RADYO -->
+    <div class="radio-master">
+        <h2 style="margin: 0; color: var(--gold); letter-spacing: 2px;">DÜNYA MÜZİĞİ RADYOSU</h2>
+        <audio controls autoplay><source src="https://icecast.radiofrance.fr/fip-midfi.mp3" type="audio/mpeg"></audio>
+    </div>
+
+    <!-- SİNEMA TARAYICI -->
+    <div class="ai-hub">
+        <input type="text" id="movieInp" class="search-bar" placeholder="Aratmak istediğin film veya yönetmen...">
+        <div>
+            <button class="hub-btn" onclick="go('mubi')">MUBI</button>
+            <button class="hub-btn" onclick="go('criterion')">Criterion</button>
+            <button class="hub-btn" onclick="go('imdb')">IMDb</button>
+        </div>
+    </div>
+
+    <!-- ALT PANEL -->
+    <div class="footer-grid">
+        <div class="card" style="height: 200px;"><canvas id="weatherChart"></canvas></div>
+        <div class="card">
+            <h4 style="margin:0 0 10px 0; color: var(--gold); border-bottom: 1px solid #333; padding-bottom: 5px;">KÜTÜPHANE</h4>
+            <a href="frekanslar.pdf" class="lib-link">📡 Frekans Verileri</a>
+            <a href="bonsai_teknikleri.pdf" class="lib-link">🌳 Bonsai Teknikleri</a>
+            <a href="mimari_cizim.pdf" class="lib-link">📐 Mimari Projeler</a>
+            <a href="python_notlar.pdf" class="lib-link">🐍 Python Notları</a>
+        </div>
+    </div>
+</div>
+
+<!-- AI ASİSTAN -->
+<div id="ai-chat-wrapper">
+    <div id="chat-header">✨ Kaş AI Asistan</div>
+    <div id="chat-content">Kaş'ta hava durumu grafiğini inceledim. Bugün bonsai sulama veya mimari tasarım üzerine ne konuşalım?</div>
+    <div class="ai-input-area">
+        <input type="text" id="ai-input" placeholder="Bir şey sor...">
+        <button id="ai-send" onclick="askAI()">Sor</button>
+    </div>
+</div>
+
 <script>
+    // Sinema Arama Fonksiyonu
+    function go(p) {
+        const q = document.getElementById('movieInp').value;
+        if(!q) { alert('Lütfen bir film adı girin.'); return; }
+        const urls = {
+            mubi: `https://mubi.com/tr/search/films?query=${q}`,
+            criterion: `https://www.criterion.com/search#stq=${q}`,
+            imdb: `https://www.imdb.com/find?q=${q}&s=tt&ttype=ft`
+        };
+        window.open(urls[p], '_blank');
+    }
+
+    // Gelişmiş Dinamik AI Fonksiyonu
     const aiHafiza = {
-        bonsai: ["Kaş'ın nem oranı bonsai teli için metali genleştirebilir, dikkat et.", "Sıralı kesimler (sıralı kesimler) için şu anki sıcaklık grafiği uygun görünüyor.", "Fidan eğitiminde wiring (tel çekme) yaparken ağacın nefes almasına izin ver."],
-        mimari: ["Çatıyı yükseltme fikrin, ısı yalıtımı için avantaj sağlayabilir.", "Merdiven tasarımlarında kot farkını grafikteki verilere göre optimize edelim.", "Görselleştirmede ışık açısını Kaş'ın iklim verilerine göre ayarlıyorum."],
-        frekans: ["Frekans analizindeki pik noktaları, çevresel parazitlerden kaynaklanıyor olabilir.", "Sinyal gücü stabilizasyonu için PDF'indeki teknik notları kontrol et."]
+        bonsai: ["Kaş'ın nem oranı bonsai teli için kritik, sıralı kesimler için teknik notlarına bakabilirsin.", "Fidan eğitiminde wiring yaparken grafikteki sıcaklık artışını unutma.", "Bonsai toprağının drenajı bu sıcaklarda çok önemli."],
+        mimari: ["Çatıyı yükseltmek ve merdiven eklemek için kütüphanendeki çizim notlarını taradım.", "Mimari görselleştirmede Kaş'ın gün ışığı açısını hesaplayabilirim.", "Statik hesaplamalarda çatı yüksekliği rüzgar direncini etkiler."],
+        frekans: ["Sinyal analizindeki dalgalanmalar yerel parazitlerden kaynaklanıyor olabilir.", "Frekans PDF'indeki 2026 verileriyle şu anki grafiği kıyaslıyorum."]
     };
 
     function askAI() {
@@ -15,12 +124,11 @@
         content.innerHTML += `<div style="color:var(--gold); margin-top:10px;"><b>Sen:</b> ${input.value}</div>`;
         
         setTimeout(() => {
-            let response = "Bu konuda kütüphanendeki PDF'leri ve güncel analizleri tarıyorum. Daha spesifik bir detay ister misin?";
+            let response = "Bunu teknik dökümanlarında ve güncel verilerde arıyorum. Başka bir detay var mı?";
             
-            // Basit bir anahtar kelime taraması ile doğru havuzdan cevap çekelim
             if(userMsg.includes("bonsai")) {
                 response = aiHafiza.bonsai[Math.floor(Math.random() * aiHafiza.bonsai.length)];
-            } else if(userMsg.includes("mimari") || userMsg.includes("çatı")) {
+            } else if(userMsg.includes("mimari") || userMsg.includes("çatı") || userMsg.includes("merdiven")) {
                 response = aiHafiza.mimari[Math.floor(Math.random() * aiHafiza.mimari.length)];
             } else if(userMsg.includes("frekans") || userMsg.includes("sinyal")) {
                 response = aiHafiza.frekans[Math.floor(Math.random() * aiHafiza.frekans.length)];
@@ -32,4 +140,20 @@
         
         input.value = "";
     }
+
+    // Grafik Yükleyici
+    fetch('results.json').then(r => r.json()).then(d => {
+        const ctx = document.getElementById('weatherChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: d.map(x => x.nokta),
+                datasets: [{ data: d.map(x => x.deger), borderColor: '#d4af37', tension: 0.4, fill: false, pointRadius: 0 }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } }
+        });
+    }).catch(e => console.error("Grafik verisi yüklenemedi."));
 </script>
+
+</body>
+</html>
