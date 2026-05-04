@@ -2,22 +2,22 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Canlı Hava İstasyonu</title>
+    <title>Antalya İlçe Analizi</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #e0f2f1; padding: 20px; }
+        body { font-family: 'Segoe UI', sans-serif; background: #fff5e6; padding: 20px; }
         .container { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        h1 { text-align: center; color: #00796b; }
-        .chart-container { height: 300px; margin-bottom: 40px; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
-        th { background: #009688; color: white; }
-        .temp-val { font-weight: bold; color: #d84315; }
+        h1 { text-align: center; color: #d35400; }
+        .chart-container { height: 400px; margin-bottom: 40px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #e67e22; color: white; }
+        .temp-box { font-size: 20px; font-weight: bold; color: #e67e22; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>☀️ Canlı Hava Analiz Paneli</h1>
+        <h1>📍 Antalya Bölgesel Isı Haritası</h1>
         <div class="chart-container"><canvas id="weatherChart"></canvas></div>
         <div id="table-area"></div>
     </div>
@@ -28,27 +28,28 @@
             .then(data => {
                 const ctx = document.getElementById('weatherChart').getContext('2d');
                 new Chart(ctx, {
-                    type: 'line',
+                    type: 'bar', // Sütun grafik
                     data: {
                         labels: data.map(d => d.nokta),
                         datasets: [{
-                            label: 'Ortalama Sıcaklık (°C)',
+                            label: 'Anlık Sıcaklık (°C)',
                             data: data.map(d => d.deger),
-                            borderColor: '#ff5722',
-                            backgroundColor: 'rgba(255, 87, 34, 0.1)',
-                            fill: true,
-                            tension: 0.3
+                            backgroundColor: ['#ff9f43', '#ee5253', '#10ac84', '#54a0ff'],
+                            borderRadius: 10
                         }]
                     },
-                    options: { responsive: true, maintainAspectRatio: false }
+                    options: { 
+                        responsive: true, 
+                        maintainAspectRatio: false,
+                        scales: { y: { beginAtZero: false } }
+                    }
                 });
 
-                let html = '<table><tr><th>Tarih</th><th>Ort. Sıcaklık</th><th>Maks. Sıcaklık</th><th>Detay</th></tr>';
+                let html = '<table><tr><th>İlçe</th><th>Sıcaklık</th><th>Detay</th></tr>';
                 data.forEach(d => {
                     html += `<tr>
-                        <td>${d.nokta}</td>
-                        <td class="temp-val">${d.deger}°C</td>
-                        <td>${d.degisim}°C</td>
+                        <td><strong>${d.nokta}</strong></td>
+                        <td class="temp-box">${d.deger}°C</td>
                         <td>${d.durum}</td>
                     </tr>`;
                 });
