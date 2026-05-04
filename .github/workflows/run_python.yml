@@ -8,14 +8,23 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'- run: pip install requests
-    - run: python data_process.py
-    - run: |
-        git config --global user.name 'Robot'
-        git config --global user.email 'robot@github.com'
-        git add results.json
-        git commit -m "Veriler guncellendi" || exit 0
-        git push
+      - uses: actions/checkout@v4
+      
+      - name: Python Kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: Kutuphaneleri Yukle
+        run: pip install requests
+          
+      - name: Hava Durumu Verisini Al
+        run: python data_process.py
+        
+      - name: Sonuclari Kaydet
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git add results.json
+          git commit -m "Hava durumu guncellendi" || exit 0
+          git push
