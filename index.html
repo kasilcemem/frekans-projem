@@ -3,121 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kaş Bağımsız Sinema Odası</title>
+    <title>Kaş Bağımsız Sinema Galerisi</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        :root {
-            --bg: #000;
-            --gold: #c5a059;
-            --panel: #111;
-        }
-        body { font-family: 'Times New Roman', serif; background: var(--bg); color: #fff; margin: 0; overflow-x: hidden; }
+        :root { --bg: #050505; --gold: #c5a059; --panel: #111; }
+        body { font-family: 'Georgia', serif; background: var(--bg); color: #fff; margin: 0; overflow-x: hidden; }
         
-        /* DEV VİDEO DUVARI */
-        .video-wall {
+        /* SİNEMATİK VİDEO IZGARASI */
+        .video-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-            gap: 5px;
-            background: #000;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 10px;
+            padding: 10px;
         }
-        .movie-item {
+        .movie-card {
             position: relative;
-            overflow: hidden;
+            background: #000;
             aspect-ratio: 16/9;
-            border: 1px solid #111;
+            overflow: hidden;
+            border: 1px solid #222;
         }
-        .movie-item iframe {
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 120%; height: 120%;
-            transform: translate(-50%, -50%);
-            pointer-events: none; /* Üzerine tıklamayı engelle, sadece izle */
-        }
-        .overlay {
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            background: linear-gradient(transparent, rgba(0,0,0,0.9));
-            padding: 20px;
-            opacity: 0;
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
             transition: 0.5s;
         }
-        .movie-item:hover .overlay { opacity: 1; }
-        .movie-title { font-size: 1.2rem; color: var(--gold); margin: 0; text-transform: uppercase; letter-spacing: 2px; }
+        .movie-card:hover video { opacity: 1; transform: scale(1.05); }
+        .label {
+            position: absolute;
+            bottom: 15px; left: 15px;
+            background: rgba(0,0,0,0.7);
+            padding: 5px 12px;
+            font-size: 12px;
+            color: var(--gold);
+            letter-spacing: 1px;
+            border-left: 3px solid var(--gold);
+        }
 
-        /* KONTROL MERKEZİ (ALT ŞERİT) */
-        .dashboard {
+        /* ALT DASHBOARD */
+        .bottom-bar {
             background: var(--panel);
-            padding: 30px;
+            padding: 25px;
             display: grid;
             grid-template-columns: 1fr 2fr 1fr;
             gap: 30px;
+            border-top: 1px solid #333;
             align-items: center;
-            border-top: 1px solid #222;
         }
-        .radio-player { text-align: center; }
-        audio { width: 100%; filter: invert(1); opacity: 0.4; }
-        
-        .book-shelf { display: flex; flex-direction: column; gap: 8px; }
-        .book-link { color: #666; text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
-        .book-link:hover { color: var(--gold); }
-
-        @media (max-width: 768px) {
-            .dashboard { grid-template-columns: 1fr; }
-            .video-wall { grid-template-columns: 1fr; }
-        }
+        .radio-info { text-align: center; }
+        audio { width: 100%; filter: invert(1); opacity: 0.5; }
+        .links a { display: block; color: #888; text-decoration: none; margin-bottom: 5px; font-size: 13px; }
+        .links a:hover { color: var(--gold); }
     </style>
 </head>
 <body>
 
-<!-- VİDEO DUVARI: AÇILDIĞI GİBİ OYNAYAN SİNEMATİK SEÇKİ -->
-<div class="video-wall">
-    <!-- Tarkovsky - The Mirror -->
-    <div class="movie-item">
-        <iframe src="https://www.youtube.com/embed/H079K-s_6zM?autoplay=1&mute=1&controls=0&loop=1&playlist=H079K-s_6zM" allow="autoplay"></iframe>
-        <div class="overlay"><p class="movie-title">The Mirror (1975)</p></div>
+<div class="video-container">
+    <!-- Otomatik Oynayan Yüksek Kaliteli Sinematik Döngüler -->
+    <div class="movie-card">
+        <video autoplay muted loop playsinline>
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-stars-in-the-night-sky-11604-large.mp4" type="video/mp4">
+        </video>
+        <div class="label">KOZMİK ESTETİK</div>
     </div>
-    <!-- Tarsem Singh - The Fall -->
-    <div class="movie-item">
-        <iframe src="https://www.youtube.com/embed/S_T09p_U6pM?autoplay=1&mute=1&controls=0&loop=1&playlist=S_T09p_U6pM" allow="autoplay"></iframe>
-        <div class="overlay"><p class="movie-title">The Fall (2006)</p></div>
+    <div class="movie-card">
+        <video autoplay muted loop playsinline>
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4" type="video/mp4">
+        </video>
+        <div class="label">DOĞA VE ŞİİR</div>
     </div>
-    <!-- Loving Vincent -->
-    <div class="movie-item">
-        <iframe src="https://www.youtube.com/embed/v9S_m8P8YvU?autoplay=1&mute=1&controls=0&loop=1&playlist=v9S_m8P8YvU" allow="autoplay"></iframe>
-        <div class="overlay"><p class="movie-title">Loving Vincent (2017)</p></div>
+    <div class="movie-card">
+        <video autoplay muted loop playsinline>
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-waves-in-the-water-1164-large.mp4" type="video/mp4">
+        </video>
+        <div class="label">AKDENİZ RİTMİ</div>
     </div>
-    <!-- Samsara -->
-    <div class="movie-item">
-        <iframe src="https://www.youtube.com/embed/n9u6TOn6i6Y?autoplay=1&mute=1&controls=0&loop=1&playlist=n9u6TOn6i6Y" allow="autoplay"></iframe>
-        <div class="overlay"><p class="movie-title">Samsara (2011)</p></div>
+    <div class="movie-card">
+        <video autoplay muted loop playsinline>
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-fireworks-in-the-night-sky-10522-large.mp4" type="video/mp4">
+        </video>
+        <div class="label">IŞIK VE FORM</div>
     </div>
 </div>
 
-<div class="dashboard">
-    <!-- ANALİZ -->
-    <div style="height: 150px;">
-        <canvas id="weatherChart"></canvas>
-    </div>
+<div class="bottom-bar">
+    <div style="height: 120px;"><canvas id="weatherChart"></canvas></div>
 
-    <!-- RADYO -->
-    <div class="radio-player">
-        <p style="color: var(--gold); letter-spacing: 3px; font-size: 0.8rem; margin-bottom: 10px;">DÜNYA MÜZİĞİ RADYOSU</p>
+    <div class="radio-info">
+        <p style="margin:0; font-size: 11px; color: var(--gold); letter-spacing: 2px;">DÜNYA MÜZİĞİ AKTİF</p>
         <audio controls autoplay>
             <source src="https://icecast.radiofrance.fr/fip-midfi.mp3" type="audio/mpeg">
         </audio>
     </div>
 
-    <!-- KİTAPLIK -->
-    <div class="book-shelf">
-        <p style="color: var(--gold); font-size: 0.8rem; letter-spacing: 2px;">KÜTÜPHANE</p>
-        <a href="frekanslar.pdf" class="book-link">📡 Frekans Verileri</a>
-        <a href="bonsai_teknikleri.pdf" class="book-link">🌳 Bonsai Sanatı</a>
-        <a href="mimari_cizim.pdf" class="book-link">📐 Mimari Eskizler</a>
+    <div class="links">
+        <p style="color: var(--gold); font-size: 11px; margin-bottom: 10px;">KÜTÜPHANE</p>
+        <a href="frekanslar.pdf">📡 Frekanslar</a>
+        <a href="bonsai_teknikleri.pdf">🌳 Bonsai</a>
+        <a href="mimari_cizim.pdf">📐 Mimari</a>
     </div>
 </div>
 
 <script>
-    // Hava durumu grafiği
     fetch('results.json')
         .then(res => res.json())
         .then(data => {
@@ -131,17 +120,16 @@
                         borderColor: '#c5a059',
                         borderWidth: 1,
                         pointRadius: 0,
-                        tension: 0.4,
+                        tension: 0.5,
                         fill: false
                     }]
                 },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
+                    responsive: true, maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: { 
-                        x: { ticks: { color: '#333' }, grid: { display: false } },
-                        y: { ticks: { display: false }, grid: { color: '#1a1a1a' } }
+                        x: { display: false },
+                        y: { display: false }
                     }
                 }
             });
