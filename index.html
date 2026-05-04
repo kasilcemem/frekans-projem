@@ -3,106 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kaş Bağımsız Sinema Galerisi</title>
+    <title>Kaş Bilgi Üssü & Radyo</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        :root { --bg: #050505; --gold: #c5a059; --panel: #111; }
-        body { font-family: 'Georgia', serif; background: var(--bg); color: #fff; margin: 0; overflow-x: hidden; }
+        :root {
+            --primary: #1a1a1a;
+            --accent: #d4af37;
+            --bg: #0f0f0f;
+        }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: #e0e0e0; margin: 0; padding: 20px; }
+        .container { max-width: 900px; margin: auto; }
         
-        /* SİNEMATİK VİDEO IZGARASI */
-        .video-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 10px;
-            padding: 10px;
+        /* RADYO PANELİ - EN ÜSTTE VE GÖRÜNÜR */
+        .radio-panel {
+            background: var(--primary);
+            border: 2px solid var(--accent);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .movie-card {
-            position: relative;
-            background: #000;
-            aspect-ratio: 16/9;
-            overflow: hidden;
-            border: 1px solid #222;
+        .live-indicator {
+            color: #e74c3c;
+            font-weight: bold;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 10px;
         }
-        video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.7;
-            transition: 0.5s;
-        }
-        .movie-card:hover video { opacity: 1; transform: scale(1.05); }
-        .label {
-            position: absolute;
-            bottom: 15px; left: 15px;
-            background: rgba(0,0,0,0.7);
-            padding: 5px 12px;
-            font-size: 12px;
-            color: var(--gold);
-            letter-spacing: 1px;
-            border-left: 3px solid var(--gold);
-        }
+        audio { width: 100%; margin-top: 20px; filter: invert(100%) brightness(1.5); }
 
-        /* ALT DASHBOARD */
-        .bottom-bar {
-            background: var(--panel);
-            padding: 25px;
+        /* GRAFİK ALANI */
+        .chart-section { background: #121212; border-radius: 20px; padding: 20px; margin-bottom: 30px; height: 250px; }
+
+        /* KÜTÜPHANE */
+        .library-grid {
             display: grid;
-            grid-template-columns: 1fr 2fr 1fr;
-            gap: 30px;
-            border-top: 1px solid #333;
-            align-items: center;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
         }
-        .radio-info { text-align: center; }
-        audio { width: 100%; filter: invert(1); opacity: 0.5; }
-        .links a { display: block; color: #888; text-decoration: none; margin-bottom: 5px; font-size: 13px; }
-        .links a:hover { color: var(--gold); }
+        .book-card {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 15px;
+            text-decoration: none;
+            color: white;
+            text-align: center;
+            border-bottom: 4px solid var(--accent);
+            transition: 0.3s;
+        }
+        .book-card:hover { transform: translateY(-5px); background: #252525; }
+        .icon { font-size: 24px; margin-bottom: 10px; display: block; }
     </style>
 </head>
 <body>
 
-<div class="video-container">
-    <!-- Otomatik Oynayan Yüksek Kaliteli Sinematik Döngüler -->
-    <div class="movie-card">
-        <video autoplay muted loop playsinline>
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-stars-in-the-night-sky-11604-large.mp4" type="video/mp4">
-        </video>
-        <div class="label">KOZMİK ESTETİK</div>
-    </div>
-    <div class="movie-card">
-        <video autoplay muted loop playsinline>
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4" type="video/mp4">
-        </video>
-        <div class="label">DOĞA VE ŞİİR</div>
-    </div>
-    <div class="movie-card">
-        <video autoplay muted loop playsinline>
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-waves-in-the-water-1164-large.mp4" type="video/mp4">
-        </video>
-        <div class="label">AKDENİZ RİTMİ</div>
-    </div>
-    <div class="movie-card">
-        <video autoplay muted loop playsinline>
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-fireworks-in-the-night-sky-10522-large.mp4" type="video/mp4">
-        </video>
-        <div class="label">IŞIK VE FORM</div>
-    </div>
-</div>
-
-<div class="bottom-bar">
-    <div style="height: 120px;"><canvas id="weatherChart"></canvas></div>
-
-    <div class="radio-info">
-        <p style="margin:0; font-size: 11px; color: var(--gold); letter-spacing: 2px;">DÜNYA MÜZİĞİ AKTİF</p>
+<div class="container">
+    <!-- RADYO MERKEZİ -->
+    <div class="radio-panel">
+        <span class="live-indicator">● CANLI YAYIN</span>
+        <h2 style="margin: 0; color: var(--accent);">Dünya Müziği Frekansı</h2>
+        <p style="color: #888; font-size: 14px;">Kaş için seçilmiş global tınılar</p>
         <audio controls autoplay>
             <source src="https://icecast.radiofrance.fr/fip-midfi.mp3" type="audio/mpeg">
+            Tarayıcınız radyoyu desteklemiyor.
         </audio>
     </div>
 
-    <div class="links">
-        <p style="color: var(--gold); font-size: 11px; margin-bottom: 10px;">KÜTÜPHANE</p>
-        <a href="frekanslar.pdf">📡 Frekanslar</a>
-        <a href="bonsai_teknikleri.pdf">🌳 Bonsai</a>
-        <a href="mimari_cizim.pdf">📐 Mimari</a>
+    <!-- HAVA DURUMU ANALİZİ -->
+    <div class="chart-section">
+        <canvas id="weatherChart"></canvas>
+    </div>
+
+    <!-- KİTAPLIK -->
+    <div class="library-grid">
+        <a href="frekanslar.pdf" class="book-card">
+            <span class="icon">📡</span> Frekans Analizleri
+        </a>
+        <a href="bonsai_teknikleri.pdf" class="book-card">
+            <span class="icon">🌳</span> Bonsai Teknikleri
+        </a>
+        <a href="mimari_cizim.pdf" class="book-card">
+            <span class="icon">📐</span> Mimari Çizimler
+        </a>
+        <a href="python_notlar.pdf" class="book-card">
+            <span class="icon">🐍</span> Python Notları
+        </a>
     </div>
 </div>
 
@@ -116,20 +104,22 @@
                 data: {
                     labels: data.map(d => d.nokta),
                     datasets: [{
+                        label: 'Sıcaklık Verileri',
                         data: data.map(d => d.deger),
-                        borderColor: '#c5a059',
-                        borderWidth: 1,
-                        pointRadius: 0,
-                        tension: 0.5,
-                        fill: false
+                        borderColor: '#d4af37',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true,
+                        backgroundColor: 'rgba(212, 175, 55, 0.1)'
                     }]
                 },
                 options: {
-                    responsive: true, maintainAspectRatio: false,
+                    responsive: true,
+                    maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: { 
-                        x: { display: false },
-                        y: { display: false }
+                        x: { grid: { display: false }, ticks: { color: '#555' } },
+                        y: { grid: { color: '#222' }, ticks: { color: '#555' } }
                     }
                 }
             });
