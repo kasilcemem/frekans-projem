@@ -2,30 +2,23 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Gelişmiş Analiz Paneli</title>
+    <title>Canlı Hava İstasyonu</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; padding: 20px; }
+        body { font-family: 'Segoe UI', sans-serif; background: #e0f2f1; padding: 20px; }
         .container { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        h1 { text-align: center; color: #1a73e8; }
-        .chart-container { position: relative; height: 300px; margin-bottom: 40px; }
+        h1 { text-align: center; color: #00796b; }
+        .chart-container { height: 300px; margin-bottom: 40px; }
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
-        th { background: #f8f9fa; color: #5f6368; }
-        .up { color: #2ecc71; font-weight: bold; }
-        .down { color: #e74c3c; font-weight: bold; }
+        th { background: #009688; color: white; }
+        .temp-val { font-weight: bold; color: #d84315; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📊 Veri Analiz Merkezi</h1>
-        
-        <!-- Grafik Alanı -->
-        <div class="chart-container">
-            <canvas id="myChart"></canvas>
-        </div>
-
-        <!-- Tablo Alanı -->
+        <h1>☀️ Canlı Hava Analiz Paneli</h1>
+        <div class="chart-container"><canvas id="weatherChart"></canvas></div>
         <div id="table-area"></div>
     </div>
 
@@ -33,32 +26,29 @@
         fetch('results.json')
             .then(res => res.json())
             .then(data => {
-                // Grafiği Çiz
-                const ctx = document.getElementById('myChart').getContext('2d');
+                const ctx = document.getElementById('weatherChart').getContext('2d');
                 new Chart(ctx, {
                     type: 'line',
                     data: {
-                        labels: data.map(d => d.nokta + ". Nokta"),
+                        labels: data.map(d => d.nokta),
                         datasets: [{
-                            label: 'Veri Seyri',
+                            label: 'Ortalama Sıcaklık (°C)',
                             data: data.map(d => d.deger),
-                            borderColor: '#1a73e8',
-                            backgroundColor: 'rgba(26, 115, 232, 0.1)',
+                            borderColor: '#ff5722',
+                            backgroundColor: 'rgba(255, 87, 34, 0.1)',
                             fill: true,
-                            tension: 0.4
+                            tension: 0.3
                         }]
                     },
                     options: { responsive: true, maintainAspectRatio: false }
                 });
 
-                // Tabloyu Oluştur
-                let html = '<table><tr><th>Nokta</th><th>Değer</th><th>Değişim</th><th>Durum</th></tr>';
+                let html = '<table><tr><th>Tarih</th><th>Ort. Sıcaklık</th><th>Maks. Sıcaklık</th><th>Detay</th></tr>';
                 data.forEach(d => {
-                    const style = d.degisim >= 0 ? 'up' : 'down';
                     html += `<tr>
                         <td>${d.nokta}</td>
-                        <td>${d.deger}</td>
-                        <td class="${style}">${d.degisim > 0 ? '+' : ''}${d.degisim}</td>
+                        <td class="temp-val">${d.deger}°C</td>
+                        <td>${d.degisim}°C</td>
                         <td>${d.durum}</td>
                     </tr>`;
                 });
