@@ -2,80 +2,61 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Kaş Bilgi Üssü & Kütüphane</title>
+    <title>Kaş Bilgi Üssü & Radyo</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; padding: 20px; color: #333; }
         .container { max-width: 1000px; margin: auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
         h1, h2 { text-align: center; color: #2c3e50; }
         
-        /* Hava Durumu Alanı */
-        .chart-container { height: 350px; margin-bottom: 50px; }
-        
-        /* Kütüphane Tasarımı */
-        .library-section { border-top: 3px solid #3498db; padding-top: 30px; margin-top: 50px; }
-        .shelf { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
-            gap: 25px; 
-            padding: 20px; 
+        .chart-container { height: 300px; margin-bottom: 40px; }
+
+        /* RADYO TASARIMI */
+        .radio-section { 
+            background: linear-gradient(135deg, #2c3e50, #4ca1af); 
+            color: white; padding: 20px; border-radius: 15px; 
+            text-align: center; margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
+        audio { width: 100%; margin-top: 10px; filter: sepia(20%) saturate(70%) grayscale(100%) contrast(99%) invert(100%); }
+
+        /* KÜTÜPHANE TASARIMI */
+        .library-section { border-top: 3px solid #3498db; padding-top: 30px; }
+        .shelf { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; padding: 20px; }
         .book { 
-            background: #34495e; 
-            color: white; 
-            padding: 20px; 
-            border-radius: 5px 15px 15px 5px; 
-            text-decoration: none; 
-            text-align: center; 
-            min-height: 150px; 
-            display: flex; 
-            flex-direction: column;
-            align-items: center; 
-            justify-content: center; 
-            font-weight: bold;
-            box-shadow: 5px 5px 15px rgba(0,0,0,0.3); 
-            transition: all 0.3s ease;
-            border-left: 12px solid #2c3e50;
+            background: #34495e; color: white; padding: 20px; border-radius: 5px 15px 15px 5px; 
+            text-decoration: none; text-align: center; min-height: 120px; display: flex; 
+            flex-direction: column; align-items: center; justify-content: center; font-weight: bold;
+            box-shadow: 5px 5px 10px rgba(0,0,0,0.2); transition: transform 0.3s;
+            border-left: 10px solid #2c3e50;
         }
-        .book:hover { 
-            transform: translateY(-15px) rotate(-5deg); 
-            background: #2980b9; 
-            box-shadow: 10px 15px 25px rgba(0,0,0,0.4);
-        }
-        .book-icon { font-size: 30px; margin-bottom: 10px; }
-        .book-title { font-size: 14px; line-height: 1.4; }
+        .book:hover { transform: translateY(-10px); background: #2980b9; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📍 Kaş ve Çevre İlçeler Analizi</h1>
+        <h1>📍 Bölgesel Analiz: Kaş</h1>
         <div class="chart-container"><canvas id="weatherChart"></canvas></div>
+
+        <!-- RADYO BÖLÜMÜ -->
+        <div class="radio-section">
+            <h2>📻 Canlı Radyo Yayını</h2>
+            <p>Dinlenirken çalış: Chill-out Mix</p>
+            <audio controls>
+                <!-- Buraya istediğin radyo linkini koyabilirsin. Şu an örnek bir jazz radyosu var. -->
+                <source src="https://icecast.radiofrance.fr/fip-midfi.mp3" type="audio/mpeg">
+                Tarayıcın radyo çaları desteklemiyor.
+            </audio>
+        </div>
 
         <!-- KİTAPLIK BÖLÜMÜ -->
         <div class="library-section">
-            <h2>📚 Kitaplık</h2>
+            <h2>📚 Dijital Kitaplık</h2>
             <div class="shelf">
-                <!-- PDF Linklerini aşağıya ekledim. Dosya isimlerini GitHub'a yüklediğinle aynı yaparsan tıklandığında açılır. -->
-                
-                <a href="frekanslar.pdf" class="book">
-                    <div class="book-icon">📡</div>
-                    <div class="book-title">Frekanslar ve Dalga Boyu</div>
-                </a>
-
-                <a href="bonsai_teknikleri.pdf" class="book" style="border-left-color: #27ae60;">
-                    <div class="book-icon">🌳</div>
-                    <div class="book-title">Bonsai Teknikleri Rehberi</div>
-                </a>
-
-                <a href="mimari_cizim.pdf" class="book" style="border-left-color: #e67e22;">
-                    <div class="book-icon">📐</div>
-                    <div class="book-title">Mimari Çizim Prensipleri</div>
-                </a>
-
-                <a href="python_notlar.pdf" class="book" style="border-left-color: #8e44ad;">
-                    <div class="book-icon">🐍</div>
-                    <div class="book-title">Python Programlama Notları</div>
-                </a>
+                <a href="frekanslar.pdf" class="book"><div>📡</div><div class="book-title">Frekanslar</div></a>
+                <a href="bonsai_teknikleri.pdf" class="book" style="border-left-color: #27ae60;"><div>🌳</div><div class="book-title">Bonsai</div></a>
+                <a href="mimari_cizim.pdf" class="book" style="border-left-color: #e67e22;"><div>📐</div><div class="book-title">Mimari</div></a>
+                <a href="python_notlar.pdf" class="book" style="border-left-color: #8e44ad;"><div>🐍</div><div class="book-title">Python</div></a>
             </div>
         </div>
     </div>
@@ -90,17 +71,13 @@
                     data: {
                         labels: data.map(d => d.nokta),
                         datasets: [{
-                            label: 'Anlık Sıcaklık (°C)',
+                            label: 'Sıcaklık (°C)',
                             data: data.map(d => d.deger),
-                            backgroundColor: ['#3498db', '#e74c3c', '#2ecc71', '#f1c40f'],
+                            backgroundColor: '#3498db',
                             borderRadius: 8
                         }]
                     },
-                    options: { 
-                        responsive: true, 
-                        maintainAspectRatio: false,
-                        scales: { y: { beginAtZero: false } }
-                    }
+                    options: { responsive: true, maintainAspectRatio: false }
                 });
             });
     </script>
