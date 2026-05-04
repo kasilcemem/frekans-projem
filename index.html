@@ -2,24 +2,46 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Antalya İlçe Analizi</title>
+    <title>Kaş Bilgi Üssü & Kütüphane</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #fff5e6; padding: 20px; }
-        .container { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        h1 { text-align: center; color: #d35400; }
-        .chart-container { height: 400px; margin-bottom: 40px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
-        th { background: #e67e22; color: white; }
-        .temp-box { font-size: 20px; font-weight: bold; color: #e67e22; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; padding: 20px; color: #333; }
+        .container { max-width: 1000px; margin: auto; background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        h1, h2 { text-align: center; color: #2c3e50; }
+        
+        /* Hava Durumu Alanı */
+        .chart-container { height: 350px; margin-bottom: 50px; }
+        
+        /* Kütüphane Tasarımı */
+        .library-section { border-top: 3px solid #3498db; pt: 30px; margin-top: 50px; }
+        .shelf { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 20px; padding: 20px; }
+        .book { 
+            background: #34495e; color: white; padding: 20px; border-radius: 5px 15px 15px 5px; 
+            text-decoration: none; text-align: center; min-height: 120px; display: flex; 
+            align-items: center; justify-content: center; font-weight: bold;
+            box-shadow: 5px 5px 10px rgba(0,0,0,0.2); transition: transform 0.3s;
+            border-left: 10px solid #2c3e50;
+        }
+        .book:hover { transform: translateY(-10px) rotate(-20deg); background: #2980b9; }
+        .book-title { font-size: 14px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📍 Antalya Bölgesel Isı Haritası</h1>
+        <h1>📍 Bölgesel Analiz: Kaş ve Çevresi</h1>
         <div class="chart-container"><canvas id="weatherChart"></canvas></div>
-        <div id="table-area"></div>
+
+        <!-- KİTAPLIK BÖLÜMÜ -->
+        <div class="library-section">
+            <h2>📚 Dijital Kitaplık</h2>
+            <div class="shelf">
+                <!-- Buradaki '#' yerlerine kendi PDF linklerini koyabilirsin -->
+                <a href="#" class="book"><div class="book-title">Frekanslar ve Dalga Boyu.pdf</div></a>
+                <a href="#" class="book" style="border-left-color: #27ae60;"><div class="book-title">Bonsai Teknikleri.pdf</div></a>
+                <a href="#" class="book" style="border-left-color: #e67e22;"><div class="book-title">Mimari Çizim Rehberi.pdf</div></a>
+                <a href="#" class="book" style="border-left-color: #8e44ad;"><div class="book-title">Python Notlarım.pdf</div></a>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -28,32 +50,18 @@
             .then(data => {
                 const ctx = document.getElementById('weatherChart').getContext('2d');
                 new Chart(ctx, {
-                    type: 'bar', // Sütun grafik
+                    type: 'bar',
                     data: {
                         labels: data.map(d => d.nokta),
                         datasets: [{
                             label: 'Anlık Sıcaklık (°C)',
                             data: data.map(d => d.deger),
-                            backgroundColor: ['#ff9f43', '#ee5253', '#10ac84', '#54a0ff'],
-                            borderRadius: 10
+                            backgroundColor: ['#3498db', '#e74c3c', '#2ecc71', '#f1c40f'],
+                            borderRadius: 8
                         }]
                     },
-                    options: { 
-                        responsive: true, 
-                        maintainAspectRatio: false,
-                        scales: { y: { beginAtZero: false } }
-                    }
+                    options: { responsive: true, maintainAspectRatio: false }
                 });
-
-                let html = '<table><tr><th>İlçe</th><th>Sıcaklık</th><th>Detay</th></tr>';
-                data.forEach(d => {
-                    html += `<tr>
-                        <td><strong>${d.nokta}</strong></td>
-                        <td class="temp-box">${d.deger}°C</td>
-                        <td>${d.durum}</td>
-                    </tr>`;
-                });
-                document.getElementById('table-area').innerHTML = html + '</table>';
             });
     </script>
 </body>
